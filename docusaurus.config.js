@@ -83,7 +83,7 @@ const config = {
           { to: "/docs/intro", label: "문의", position: "left" },
           { to: "/docs/intro", label: "Blog", position: "left" },
           {
-            href: "https://github.com/facebook/docusaurus",
+            href: "https://github.com/JULIE8410/landing-page",
             label: "GitHub",
             position: "right",
           },

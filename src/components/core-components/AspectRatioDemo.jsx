@@ -1,10 +1,10 @@
 import React from "react";
 import * as AspectRatio from "@radix-ui/react-aspect-ratio";
-// import "../css/global.css";
+import "../../css/global.css";
 import "../../css/aspect-ratio.css";
 
 const AspectRatioDemo = () => (
-  <div className="Container">
+  <div className="ComponentBox">
     <AspectRatio.Root ratio={16 / 9}>
       <img
         className="Image"

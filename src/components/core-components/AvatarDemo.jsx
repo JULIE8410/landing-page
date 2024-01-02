@@ -1,10 +1,10 @@
 import React from "react";
 import * as Avatar from "@radix-ui/react-avatar";
-// import "../css/global.css";
+import "../../css/global.css";
 import "../../css/avatar.css";
 
 const AvatarDemo = () => (
-  <div style={{ display: "flex", gap: 20 }}>
+  <div className="ComponentBox">
     <Avatar.Root className="AvatarRoot">
       <Avatar.Image
         className="AvatarImage"
