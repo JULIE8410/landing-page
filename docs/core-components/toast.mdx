@@ -1,0 +1,597 @@
+---
+sidebar_position: 24
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import PropTable from "../../src/components/table/PropTable.js";
+import DataAttributeTable from "../../src/components/table/DataAttributeTable.js";
+import CssVariableTable from "../../src/components/table/CssVariableTable.js";
+import KeyboardInteractionTable from "../../src/components/table/KeyboardInteractionTable.js";
+import toastAPI from "../data/toast.ts";
+import ToastDemo from "../../src/components/core-components/ToastDemo.jsx";
+
+# Toast
+
+일시적으로 표시되는 간결한 메시지입니다.
+
+<ToastDemo />
+
+<Tabs>
+<TabItem value="js" label="index.js">
+
+```jsx
+import * as React from "react";
+import * as Toast from "@radix-ui/react-toast";
+import "./styles.css";
+
+const ToastDemo = () => {
+  const [open, setOpen] = React.useState(false);
+  const eventDateRef = React.useRef(new Date());
+  const timerRef = React.useRef(0);
+
+  React.useEffect(() => {
+    return () => clearTimeout(timerRef.current);
+  }, []);
+
+  return (
+    <Toast.Provider swipeDirection="right">
+      <button
+        className="Button large violet"
+        onClick={() => {
+          setOpen(false);
+          window.clearTimeout(timerRef.current);
+          timerRef.current = window.setTimeout(() => {
+            eventDateRef.current = oneWeekAway();
+            setOpen(true);
+          }, 100);
+        }}
+      >
+        Add to calendar
+      </button>
+
+      <Toast.Root className="ToastRoot" open={open} onOpenChange={setOpen}>
+        <Toast.Title className="ToastTitle">Scheduled: Catch up</Toast.Title>
+        <Toast.Description asChild>
+          <time
+            className="ToastDescription"
+            dateTime={eventDateRef.current.toISOString()}
+          >
+            {prettyDate(eventDateRef.current)}
+          </time>
+        </Toast.Description>
+        <Toast.Action
+          className="ToastAction"
+          asChild
+          altText="Goto schedule to undo"
+        >
+          <button className="Button small green">Undo</button>
+        </Toast.Action>
+      </Toast.Root>
+      <Toast.Viewport className="ToastViewport" />
+    </Toast.Provider>
+  );
+};
+
+function oneWeekAway(date) {
+  const now = new Date();
+  const inOneWeek = now.setDate(now.getDate() + 7);
+  return new Date(inOneWeek);
+}
+
+function prettyDate(date) {
+  return new Intl.DateTimeFormat("en-US", {
+    dateStyle: "full",
+    timeStyle: "short",
+  }).format(date);
+}
+
+export default ToastDemo;
+```
+
+</TabItem>
+<TabItem value="css" label="styles.css">
+
+```css
+@import "@radix-ui/colors/black-alpha.css";
+@import "@radix-ui/colors/green.css";
+@import "@radix-ui/colors/mauve.css";
+@import "@radix-ui/colors/slate.css";
+@import "@radix-ui/colors/violet.css";
+
+/* reset */
+button {
+  all: unset;
+}
+
+.ToastViewport {
+  --viewport-padding: 25px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--viewport-padding);
+  gap: 10px;
+  width: 390px;
+  max-width: 100vw;
+  margin: 0;
+  list-style: none;
+  z-index: 2147483647;
+  outline: none;
+}
+
+.ToastRoot {
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px
+      10px 20px -15px;
+  padding: 15px;
+  display: grid;
+  grid-template-areas: "title action" "description action";
+  grid-template-columns: auto max-content;
+  column-gap: 15px;
+  align-items: center;
+}
+.ToastRoot[data-state="open"] {
+  animation: slideIn 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ToastRoot[data-state="closed"] {
+  animation: hide 100ms ease-in;
+}
+.ToastRoot[data-swipe="move"] {
+  transform: translateX(var(--radix-toast-swipe-move-x));
+}
+.ToastRoot[data-swipe="cancel"] {
+  transform: translateX(0);
+  transition: transform 200ms ease-out;
+}
+.ToastRoot[data-swipe="end"] {
+  animation: swipeOut 100ms ease-out;
+}
+
+@keyframes hide {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(calc(100% + var(--viewport-padding)));
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes swipeOut {
+  from {
+    transform: translateX(var(--radix-toast-swipe-end-x));
+  }
+  to {
+    transform: translateX(calc(100% + var(--viewport-padding)));
+  }
+}
+
+.ToastTitle {
+  grid-area: title;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: var(--slate-12);
+  font-size: 15px;
+}
+
+.ToastDescription {
+  grid-area: description;
+  margin: 0;
+  color: var(--slate-11);
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.ToastAction {
+  grid-area: action;
+}
+
+.Button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  font-weight: 500;
+}
+.Button.small {
+  font-size: 12px;
+  padding: 0 10px;
+  line-height: 25px;
+  height: 25px;
+}
+.Button.large {
+  font-size: 15px;
+  padding: 0 15px;
+  line-height: 35px;
+  height: 35px;
+}
+.Button.violet {
+  background-color: white;
+  color: var(--violet-11);
+  box-shadow: 0 2px 10px var(--black-a7);
+}
+.Button.violet:hover {
+  background-color: var(--mauve-3);
+}
+.Button.violet:focus {
+  box-shadow: 0 0 0 2px black;
+}
+.Button.green {
+  background-color: var(--green-2);
+  color: var(--green-11);
+  box-shadow: inset 0 0 0 1px var(--green-7);
+}
+.Button.green:hover {
+  box-shadow: inset 0 0 0 1px var(--green-8);
+}
+.Button.green:focus {
+  box-shadow: 0 0 0 2px var(--green-8);
+}
+```
+
+</TabItem>
+</Tabs>
+
+## 특징
+
+![checkbox icon](../../static/img/checkboxicon.png) 자동 닫기
+
+![checkbox icon](../../static/img/checkboxicon.png) Hover, focus 및 window blur 시 닫기 일시 중지
+
+![checkbox icon](../../static/img/checkboxicon.png) toast viewport로 이동할 수 있는 단축키 지원
+
+![checkbox icon](../../static/img/checkboxicon.png) swipe 제스처를 통해 닫기 지원
+
+![checkbox icon](../../static/img/checkboxicon.png) swipe 제스처 애니메이션의 CSS 변수를 노출
+
+![checkbox icon](../../static/img/checkboxicon.png) 제어 또는 비제어 가능
+
+export const Highlight = ({ children, color }) => (
+  <span style={{ color: color }}>{children}</span>
+);
+
+## <Highlight color='#1C5AEC'>설치</Highlight>
+
+커맨드라인에서 컴포넌트를 설치하세요.
+
+```bash
+npm install @radix-ui/react-toast
+```
+
+## <Highlight color='#1C5AEC'>구성</Highlight>
+
+모든 구성요소를 가져와서 조합하세요.
+
+```jsx
+import * as Toast from "@radix-ui/react-toast";
+
+export default () => (
+  <Toast.Provider>
+    <Toast.Root>
+      <Toast.Title />
+      <Toast.Description />
+      <Toast.Action />
+      <Toast.Close />
+    </Toast.Root>
+
+    <Toast.Viewport />
+  </Toast.Provider>
+);
+```
+
+## <Highlight color='#1C5AEC'>API 참조</Highlight>
+
+### <Highlight color='#1C5AEC'>Provider</Highlight>
+
+Toast와 toast viewport를 감싸는 공급자로, 보통 어플리케이션을 감싸는 데 사용합니다.
+
+<PropTable api={toastAPI} category="provider" />
+
+### <Highlight color='#1C5AEC'>Viewport</Highlight>
+
+Toast가 나타나는 고정된 영역입니다.
+사용자는 단축키를 눌러 viewport로 점프할 수 있습니다.
+키보드 사용자가 단축키를 찾을 수 있도록 하는 것은 사용자에게 달려 있습니다.
+
+<PropTable api={toastAPI} category="viewport" />
+
+### <Highlight color='#1C5AEC'>Root</Highlight>
+
+자동으로 닫히는 toast입니다. [`사용자의 반응`](https://www.radix-ui.com/primitives/docs/components/toast#action)을 얻기 위해 열려 있지 않아야 합니다.
+
+<PropTable api={toastAPI} category="root" />
+<DataAttributeTable api={toastAPI} category="root" />
+<CssVariableTable api={toastAPI} category="root" />
+
+### <Highlight color='#1C5AEC'>Title</Highlight>
+
+Toast에 대한 선택적인 제목입니다.
+
+<PropTable api={toastAPI} category="title" />
+
+### <Highlight color='#1C5AEC'>Description</Highlight>
+
+Toast 메시지 입니다.
+
+<PropTable api={toastAPI} category="description" />
+
+### <Highlight color='#1C5AEC'>Action</Highlight>
+
+사용자가 [`시간제한`](https://www.w3.org/TR/UNDERSTANDING-WCAG20/time-limits-required-behaviors.html)의 결과로
+예기치 않은 부작용이 발생하는 작업을 완료하지 않도록 하기 위해 무시해도 무방한 작업입니다.
+사용자 응답을 얻어야 할 경우, 대신 toast 형식의 `AlertDialog`를 viewport로 포팅합니다.
+
+<PropTable api={toastAPI} category="action" />
+
+### <Highlight color='#1C5AEC'>Close</Highlight>
+
+Toast 기간이 경과하기 전에 toast를 취소할 수 있는 버튼입니다.
+
+<PropTable api={toastAPI} category="close" />
+
+## <Highlight color='#1C5AEC'>예</Highlight>
+
+#### 사용자 지정 단축키
+
+keycode.info 의 각 키에 대해 `event.code` 값을 사용하여 기본 단축키를 재정의합니다.
+
+```jsx
+<Toast.Provider>
+  {/* ... */}
+  <Toast.Viewport hotkey={["altKey", "KeyT"]} />
+</Toast.Provider>
+```
+
+#### 사용자 정의 기간
+
+Toast 기간을 사용자가 지정하여 값을 재정의 합니다.
+
+```jsx
+<Toast.Root duration={3000}>
+  <Toast.Description>Saved!</Toast.Description>
+</Toast.Root>
+```
+
+#### 중복 toast
+
+사용자가 버튼을 클릭할 때마다 토스트가 나타나야 할 경우 state를 사용하여 동일한 toast의 여러 인스턴스를 렌더링합니다(아래 참조).
+또는 부분을 추상화하여 사용자 고유의 `imperative API`를 만들 수도 있습니다.
+
+```jsx
+export default () => {
+  const [savedCount, setSavedCount] = React.useState(0);
+
+  return (
+    <div>
+      <form onSubmit={() => setSavedCount((count) => count + 1)}>
+        {/* ... */}
+        <button>save</button>
+      </form>
+
+      {Array.from({ length: savedCount }).map((_, index) => (
+        <Toast.Root key={index}>
+          <Toast.Description>Saved!</Toast.Description>
+        </Toast.Root>
+      ))}
+    </div>
+  );
+};
+```
+
+#### Swipe gesture 애니메이션화
+
+`--radix-toast-swipe-move-[x|y]` 및 `--radix-toast-swipe-cancel-end-[x|y]` CSS 변수를 `data-swipe="[start|move|end]"` 속성과 결합하여 스와이프를 종료 제스처로 애니메이션화합니다.
+다음은 예입니다:
+
+```jsx
+// index.jsx
+import * as Toast from "@radix-ui/react-toast";
+import "./styles.css";
+
+export default () => (
+  <Toast.Provider swipeDirection="right">
+    <Toast.Root className="ToastRoot">...</Toast.Root>
+    <Toast.Viewport />
+  </Toast.Provider>
+);
+```
+
+```jsx
+/* styles.css */
+.ToastRoot[data-swipe='move'] {
+  transform: translateX(var(--radix-toast-swipe-move-x));
+}
+.ToastRoot[data-swipe='cancel'] {
+  transform: translateX(0);
+  transition: transform 200ms ease-out;
+}
+.ToastRoot[data-swipe='end'] {
+  animation: slideRight 100ms ease-out;
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(var(--radix-toast-swipe-end-x));
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+```
+
+## <Highlight color='#1C5AEC'>접근성</Highlight>
+
+[`Aria-live requirements`](https://www.w3.org/TR/wai-aria/#aria-live)을 준수합니다.
+
+### <Highlight color='#1C5AEC'>Sensitivity</Highlight>
+
+Type prop을 사용하여 화면 판독기의 toast 감도를 조절합니다.
+사용자 액션의 결과인 toast의 경우 `foreground`를 선택합니다.
+배경 작업에서 생성된 toast는 `background`를 사용해야 합니다.
+
+### <Highlight color='#1C5AEC'>Foreground</Highlight>
+
+전경 toast는 즉시 알려줍니다.
+보조 기술은 전경 toast가 나타나면 이전에 대기열에 있는 메시지를 지우도록 선택할 수 있습니다.
+동시에 뚜렷한 전경 toast를 쌓지 않도록 하십시오.
+
+### <Highlight color='#1C5AEC'>Background</Highlight>
+
+배경 toast는 예를 들어 화면 판독기가 현재 문장을 다 읽은 후 다음 부드럽게 공지됩니다.
+대기 중인 메시지를 지우지 않으므로 사용자 상호 작용에 응답하여 사용할 때 화면 판독기 사용자에게 지연 사용자 경험으로 인식될 수 있습니다.
+
+```jsx
+<Toast.Root type="foreground">
+  <Toast.Description>File removed successfully.</Toast.Description>
+  <Toast.Close>Dismiss</Toast.Close>
+</Toast.Root>
+
+<Toast.Root type="background">
+  <Toast.Description>We've just released Radix 1.0.</Toast.Description>
+  <Toast.Close>Dismiss</Toast.Close>
+</Toast.Root>
+```
+
+### <Highlight color='#1C5AEC'>Alternative action</Highlight>
+
+화면 판독기 사용자에게 toast를 대신하는 방법을 지시하려면 `Action`의 `altText` prop을 사용합니다.
+사용자를 응용프로그램의 영구적인 장소로 유도하여 작업을 수행하거나, 사용자 정의 단축키 로직을 구현할 수 있습니다.
+후자를 구현할 경우 `foreground` 타입을 사용하여 즉시 알림을 제공하고 지속 시간을 늘려 사용자에게 충분한 시간을 제공합니다.
+
+```jsx
+<Toast.Root type="background">
+  <Toast.Title>Upgrade Available!</Toast.Title>
+  <Toast.Description>We've just released Radix 1.0.</Toast.Description>
+  <Toast.Action altText="Goto account settings to upgrade">
+    Upgrade
+  </Toast.Action>
+  <Toast.Close>Dismiss</Toast.Close>
+</Toast.Root>
+
+<Toast.Root type="foreground" duration={10000}>
+  <Toast.Description>File removed successfully.</Toast.Description>
+  <Toast.Action altText="Undo (Alt+U)">
+    Undo <kbd>Alt</kbd>+<kbd>U</kbd>
+  </Toast.Action>
+  <Toast.Close>Dismiss</Toast.Close>
+</Toast.Root>
+```
+
+### <Highlight color='#1C5AEC'>Close icon button</Highlight>
+
+아이콘(또는 글꼴 아이콘)을 제공할 때는 화면 판독기 사용자를 위해 올바르게 label을 지정해야 합니다.
+
+```jsx
+<Toast.Root type="foreground">
+  <Toast.Description>Saved!</Toast.Description>
+  <Toast.Close aria-label="Close">
+    <span aria-hidden>×</span>
+  </Toast.Close>
+</Toast.Root>
+```
+
+### <Highlight color='#1C5AEC'>키보드 상호 작용</Highlight>
+
+<KeyboardInteractionTable api={toastAPI} category="keyboardInteractions" />
+
+## <Highlight color='#1C5AEC'>사용자 정의 API</Highlight>
+
+#### 추상화
+
+원시적인 부분을 사용자의 구성요소로 추상화하여 사용자 고유의 API를 만듭니다.
+
+#### 사용
+
+```jsx
+import { Toast } from "./your-toast";
+
+export default () => (
+  <Toast title="Upgrade available" content="We've just released Radix 3.0!">
+    <button onClick={handleUpgrade}>Upgrade</button>
+  </Toast>
+);
+```
+
+#### 구현
+
+```jsx
+// your-toast.jsx
+import * as ToastPrimitive from "@radix-ui/react-toast";
+
+export const Toast = ({ title, content, children, ...props }) => {
+  return (
+    <ToastPrimitive.Root {...props}>
+      {title && <ToastPrimitive.Title>{title}</ToastPrimitive.Title>}
+      <ToastPrimitive.Description>{content}</ToastPrimitive.Description>
+      {children && (
+        <ToastPrimitive.Action asChild>{children}</ToastPrimitive.Action>
+      )}
+      <ToastPrimitive.Close aria-label="Close">
+        <span aria-hidden>×</span>
+      </ToastPrimitive.Close>
+    </ToastPrimitive.Root>
+  );
+};
+```
+
+#### 필수적 API
+
+원하는 경우 `toast duplication` 를 허용하기 위해 자신만의 필수 API를 만듭니다.
+
+#### 사용
+
+```jsx
+import { Toast } from "./your-toast";
+
+export default () => {
+  const savedRef = React.useRef();
+  return (
+    <div>
+      <form onSubmit={() => savedRef.current.publish()}>
+        {/* ... */}
+        <button>Save</button>
+      </form>
+      <Toast ref={savedRef}>Saved successfully!</Toast>
+    </div>
+  );
+};
+```
+
+#### 구현
+
+```jsx
+// your-toast.jsx
+import React from "react";
+import * as ToastPrimitive from "@radix-ui/react-toast";
+
+export const Toast = React.forwardRef((props, forwardedRef) => {
+  const { children, ...toastProps } = props;
+  const [count, setCount] = React.useState(0);
+
+  React.useImperativeHandle(forwardedRef, () => ({
+    publish: () => setCount((count) => count + 1),
+  }));
+
+  return (
+    <>
+      {Array.from({ length: count }).map((_, index) => (
+        <ToastPrimitive.Root key={index} {...toastProps}>
+          <ToastPrimitive.Description>{children}</ToastPrimitive.Description>
+          <ToastPrimitive.Close>Dismiss</ToastPrimitive.Close>
+        </ToastPrimitive.Root>
+      ))}
+    </>
+  );
+});
+```

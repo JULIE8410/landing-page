@@ -1,0 +1,428 @@
+---
+sidebar_position: 11
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import PropTable from "../../src/components/table/PropTable.js";
+import DataAttributeTable from "../../src/components/table/DataAttributeTable.js";
+import CssVariableTable from "../../src/components/table/CssVariableTable.js";
+import hoverCardAPI from "../data/hover-card.ts";
+import HoverCardDemo from "../../src/components/core-components/HoverCardDemo.jsx";
+
+# Hover Card
+
+시력이 있는 사용자는 링크 뒤에서 사용 가능한 콘텐츠를 미리 볼 수 있습니다.
+
+<HoverCardDemo />
+
+<Tabs>
+<TabItem value="js" label="index.js">
+
+```jsx
+import React from "react";
+import * as HoverCard from "@radix-ui/react-hover-card";
+import "./styles.css";
+
+const HoverCardDemo = () => (
+  <HoverCard.Root>
+    <HoverCard.Trigger asChild>
+      <a
+        className="ImageTrigger"
+        href="https://twitter.com/radix_ui"
+        target="_blank"
+        rel="noreferrer noopener"
+      >
+        <img
+          className="Image normal"
+          src="https://pbs.twimg.com/profile_images/1337055608613253126/r_eiMp2H_400x400.png"
+          alt="Radix UI"
+        />
+      </a>
+    </HoverCard.Trigger>
+    <HoverCard.Portal>
+      <HoverCard.Content className="HoverCardContent" sideOffset={5}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+          <img
+            className="Image large"
+            src="https://pbs.twimg.com/profile_images/1337055608613253126/r_eiMp2H_400x400.png"
+            alt="Radix UI"
+          />
+          <div style={{ display: "flex", flexDirection: "column", gap: 15 }}>
+            <div>
+              <div className="Text bold">Radix</div>
+              <div className="Text faded">@radix_ui</div>
+            </div>
+            <div className="Text">
+              Components, icons, colors, and templates for building
+              high-quality, accessible UI. Free and open-source.
+            </div>
+            <div style={{ display: "flex", gap: 15 }}>
+              <div style={{ display: "flex", gap: 5 }}>
+                <div className="Text bold">0</div>{" "}
+                <div className="Text faded">Following</div>
+              </div>
+              <div style={{ display: "flex", gap: 5 }}>
+                <div className="Text bold">2,900</div>{" "}
+                <div className="Text faded">Followers</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <HoverCard.Arrow className="HoverCardArrow" />
+      </HoverCard.Content>
+    </HoverCard.Portal>
+  </HoverCard.Root>
+);
+
+export default HoverCardDemo;
+```
+
+</TabItem>
+<TabItem value="css" label="styles.css">
+
+```css
+@import "@radix-ui/colors/mauve.css";
+
+/* reset */
+a {
+  all: unset;
+}
+
+.HoverCardContent {
+  border-radius: 6px;
+  padding: 20px;
+  width: 300px;
+  background-color: white;
+  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px
+      10px 20px -15px;
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+.HoverCardContent[data-side="top"] {
+  animation-name: slideDownAndFade;
+}
+.HoverCardContent[data-side="right"] {
+  animation-name: slideLeftAndFade;
+}
+.HoverCardContent[data-side="bottom"] {
+  animation-name: slideUpAndFade;
+}
+.HoverCardContent[data-side="left"] {
+  animation-name: slideRightAndFade;
+}
+
+.HoverCardArrow {
+  fill: white;
+}
+
+.ImageTrigger {
+  cursor: pointer;
+  border-radius: 100%;
+  display: inline-block;
+}
+.ImageTrigger:focus {
+  box-shadow: 0 0 0 2px white;
+}
+
+.Image {
+  display: block;
+  border-radius: 100%;
+}
+.Image.normal {
+  width: 45px;
+  height: 45px;
+}
+.Image.large {
+  width: 60px;
+  height: 60px;
+}
+
+.Text {
+  margin: 0;
+  color: var(--mauve-12);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.Text.faded {
+  color: var(--mauve-10);
+}
+.Text.bold {
+  font-weight: 500;
+}
+
+@keyframes slideUpAndFade {
+  0% {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideRightAndFade {
+  0% {
+    opacity: 0;
+    transform: translateX(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideDownAndFade {
+  0% {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideLeftAndFade {
+  0% {
+    opacity: 0;
+    transform: translateX(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+## 특징
+
+![checkbox icon](../../static/img/checkboxicon.png) 제어 또는 비제어 가능
+
+![checkbox icon](../../static/img/checkboxicon.png) 측면, 정렬, 오프셋, 충돌 처리를 사용자 정의
+
+![checkbox icon](../../static/img/checkboxicon.png) 선택적으로 포인팅 화살표를 렌더링
+
+![checkbox icon](../../static/img/checkboxicon.png) 사용자 지정 열기 및 닫기 지연을 지원
+
+![checkbox icon](../../static/img/checkboxicon.png) 호버 전용으로 열림
+
+![checkbox icon](../../static/img/checkboxicon.png) 화면 판독기에서 무시됨
+
+export const Highlight = ({ children, color }) => (
+  <span style={{ color: color }}>{children}</span>
+);
+
+## <Highlight color='#1C5AEC'>설치</Highlight>
+
+커맨드라인에서 컴포넌트를 설치하세요.
+
+```bash
+npm install @radix-ui/react-hover-card
+```
+
+## <Highlight color='#1C5AEC'>구성</Highlight>
+
+모든 구성요소를 가져와서 조합하세요.
+
+```jsx
+import * as HoverCard from "@radix-ui/react-hover-card";
+
+export default () => (
+  <HoverCard.Root>
+    <HoverCard.Trigger />
+    <HoverCard.Portal>
+      <HoverCard.Content>
+        <HoverCard.Arrow />
+      </HoverCard.Content>
+    </HoverCard.Portal>
+  </HoverCard.Root>
+);
+```
+
+## <Highlight color='#1C5AEC'>API 참조</Highlight>
+
+### <Highlight color='#1C5AEC'>Root</Highlight>
+
+Hover Card의 모든 부분을 포함합니다.
+
+<PropTable api={hoverCardAPI} category="root" />
+
+### <Highlight color='#1C5AEC'>Trigger</Highlight>
+
+호버링할 때 호버 카드를 여는 링크입니다.
+
+<PropTable api={hoverCardAPI} category="trigger" />
+<DataAttributeTable api={hoverCardAPI} category="trigger" />
+
+### <Highlight color='#1C5AEC'>Portal</Highlight>
+
+콘텐츠 부분을 `body`에 포팅합니다.
+
+<PropTable api={hoverCardAPI} category="portal" />
+
+### <Highlight color='#1C5AEC'>Content</Highlight>
+
+호버 카드가 열려 있을 때 나타나는 구성 요소입니다.
+
+<PropTable api={hoverCardAPI} category="content" />
+<DataAttributeTable api={hoverCardAPI} category="content" />
+<CssVariableTable api={hoverCardAPI} category="content" />
+
+### <Highlight color='#1C5AEC'>Arrow</Highlight>
+
+Hover card와 나란히 렌더링할 선택적 화살표 요소입니다.
+트리거를 `HoverCard.Content`와 시각적으로 연결하는 데 사용할 수 있습니다.
+`HoverCard.Content` 안에서 렌더링해야 합니다.
+
+<PropTable api={hoverCardAPI} category="arrow" />
+
+## <Highlight color='#1C5AEC'>예</Highlight>
+
+#### 즉시 표시
+
+`openDelay` prop을 사용하여 호버 카드가 열리는 데 걸리는 시간을 제어합니다.
+
+```jsx
+import * as HoverCard from "@radix-ui/react-hover-card";
+
+export default () => (
+  <HoverCard.Root openDelay={0}>
+    <HoverCard.Trigger>…</HoverCard.Trigger>
+    <HoverCard.Content>…</HoverCard.Content>
+  </HoverCard.Root>
+);
+```
+
+#### 콘텐츠 사이즈 제한
+
+트리거 너비와 일치하도록 콘텐츠의 너비를 제한할 수도 있고, 뷰포트를 초과하지 않도록 높이를 제한할 수도 있습니다.
+이를 지원하기 위해 `--radix-hover-card-trigger-width` 및 `--radix-hover-card-content-available-height`와 같은 여러 CSS 사용자 지정 속성을 노출합니다. 이를 사용하여 콘텐츠 차원을 제한합니다.
+
+```jsx
+// index.jsx
+import * as HoverCard from "@radix-ui/react-hover-card";
+import "./styles.css";
+
+export default () => (
+  <HoverCard.Root>
+    <HoverCard.Trigger>…</HoverCard.Trigger>
+    <HoverCard.Portal>
+      <HoverCard.Content className="HoverCardContent" sideOffset={5}>
+        …
+      </HoverCard.Content>
+    </HoverCard.Portal>
+  </HoverCard.Root>
+);
+```
+
+```css
+/* styles.css */
+.HoverCardContent {
+  width: var(--radix-hover-card-trigger-width);
+  max-height: var(--radix-hover-card-content-available-height);
+}
+```
+
+#### 원본 인식 애니메이션
+
+CSS 사용자 지정 속성 `--radix-hover-card-content-transform-origin`을 노출합니다.
+이를 사용하여 `side`, `sideOffset`, `align`, `alignOffset` 및 충돌을 기준으로 계산된 원본에서 컨텐츠를 애니메이션화합니다.
+
+```jsx
+// index.jsx
+import * as HoverCard from "@radix-ui/react-hover-card";
+import "./styles.css";
+
+export default () => (
+  <HoverCard.Root>
+    <HoverCard.Trigger>…</HoverCard.Trigger>
+    <HoverCard.Content className="HoverCardContent">…</HoverCard.Content>
+  </HoverCard.Root>
+);
+```
+
+```css
+/* styles.css */
+.HoverCardContent {
+  transform-origin: var(--radix-hover-card-content-transform-origin);
+  animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+```
+
+#### 충돌 인식 애니메이션
+
+`data-side`와 `data-align` 속성을 사용합니다.
+이 값은 충돌을 반영하기 위해 런타임에 변경되며, 충돌 및 방향 인식 애니메이션을 만들 때 사용합니다.
+
+```jsx
+// index.jsx
+import * as HoverCard from "@radix-ui/react-hover-card";
+import "./styles.css";
+
+export default () => (
+  <HoverCard.Root>
+    <HoverCard.Trigger>…</HoverCard.Trigger>
+    <HoverCard.Content className="HoverCardContent">…</HoverCard.Content>
+  </HoverCard.Root>
+);
+```
+
+```css
+/* styles.css */
+.HoverCardContent {
+  animation-duration: 0.6s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+.HoverCardContent[data-side="top"] {
+  animation-name: slideUp;
+}
+.HoverCardContent[data-side="bottom"] {
+  animation-name: slideDown;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+```
+
+## <Highlight color='#1C5AEC'>접근성</Highlight>
+
+### <Highlight color='#1C5AEC'>키보드 상호작용</Highlight>
+
+호버 카드는 마우스 사용자 전용이므로 키보드 탐색에 응답하지 않습니다.

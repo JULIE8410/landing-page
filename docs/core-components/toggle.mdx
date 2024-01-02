@@ -1,0 +1,119 @@
+---
+sidebar_position: 25
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import PropTable from "../../src/components/table/PropTable.js";
+import DataAttributeTable from "../../src/components/table/DataAttributeTable.js";
+import KeyboardInteractionTable from "../../src/components/table/KeyboardInteractionTable.js";
+import toggleAPI from "../data/toggle.ts";
+import ToggleDemo from "../../src/components/core-components/ToggleDemo.jsx";
+
+# Toggle
+
+켜거나 끌 수 있는 두 상태 버튼입니다.
+
+<ToggleDemo />
+
+<Tabs>
+<TabItem value="js" label="index.js">
+
+```jsx
+import React from "react";
+import * as Toggle from "@radix-ui/react-toggle";
+import { FontItalicIcon } from "@radix-ui/react-icons";
+import "./styles.css";
+
+const ToggleDemo = () => (
+  <Toggle.Root className="Toggle" aria-label="Toggle italic">
+    <FontItalicIcon />
+  </Toggle.Root>
+);
+
+export default ToggleDemo;
+```
+
+</TabItem>
+<TabItem value="css" label="styles.css">
+
+```css
+@import "@radix-ui/colors/black-alpha.css";
+@import "@radix-ui/colors/mauve.css";
+@import "@radix-ui/colors/violet.css";
+
+/* reset */
+button {
+  all: unset;
+}
+
+.Toggle {
+  background-color: white;
+  color: var(--mauve-11);
+  height: 35px;
+  width: 35px;
+  border-radius: 4px;
+  display: flex;
+  font-size: 15px;
+  line-height: 1;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px var(--black-a7);
+}
+.Toggle:hover {
+  background-color: var(--violet-3);
+}
+.Toggle[data-state="on"] {
+  background-color: var(--violet-6);
+  color: var(--violet-12);
+}
+.Toggle:focus {
+  box-shadow: 0 0 0 2px black;
+}
+```
+
+</TabItem>
+</Tabs>
+
+## 특징
+
+![checkbox icon](../../static/img/checkboxicon.png) 완전한 키보드 탐색
+
+![checkbox icon](../../static/img/checkboxicon.png) 제어 또는 비제어 가능
+
+export const Highlight = ({ children, color }) => (
+  <span style={{ color: color }}>{children}</span>
+);
+
+## <Highlight color='#1C5AEC'>설치</Highlight>
+
+커맨드라인에서 컴포넌트를 설치하세요.
+
+```bash
+npm install @radix-ui/react-toggle
+```
+
+## <Highlight color='#1C5AEC'>구성</Highlight>
+
+모든 구성요소를 가져와서 조합하세요.
+
+```jsx
+import * as Toggle from "@radix-ui/react-toggle";
+
+export default () => <Toggle.Root />;
+```
+
+## <Highlight color='#1C5AEC'>API 참조</Highlight>
+
+### <Highlight color='#1C5AEC'>Root</Highlight>
+
+Toggle입니다.
+
+<PropTable api={toggleAPI} category="root" />
+<DataAttributeTable api={toggleAPI} category="root" />
+
+## <Highlight color='#1C5AEC'>접근성</Highlight>
+
+### <Highlight color='#1C5AEC'>키보드 상호작용</Highlight>
+
+<KeyboardInteractionTable api={toggleAPI} category="keyboardInteractions" />

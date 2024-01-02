@@ -1,0 +1,153 @@
+---
+sidebar_position: 22
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import PropTable from "../../src/components/table/PropTable.js";
+import DataAttributeTable from "../../src/components/table/DataAttributeTable.js";
+import KeyboardInteractionTable from "../../src/components/table/KeyboardInteractionTable.js";
+import switchAPI from "../data/switch.ts";
+import SwitchDemo from "../../src/components/core-components/SwitchDemo.jsx";
+
+# Switch
+
+사용자가 선택한 것과 선택하지 않은 것 사이를 토글할 수 있는 컨트롤입니다.
+
+<SwitchDemo />
+
+<Tabs>
+<TabItem value="js" label="index.js">
+
+```jsx
+import React from "react";
+import * as Switch from "@radix-ui/react-switch";
+import "./styles.css";
+
+const SwitchDemo = () => (
+  <form>
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <label
+        className="Label"
+        htmlFor="airplane-mode"
+        style={{ paddingRight: 15 }}
+      >
+        Airplane mode
+      </label>
+      <Switch.Root className="SwitchRoot" id="airplane-mode">
+        <Switch.Thumb className="SwitchThumb" />
+      </Switch.Root>
+    </div>
+  </form>
+);
+
+export default SwitchDemo;
+```
+
+</TabItem>
+<TabItem value="css" label="styles.css">
+
+```css
+@import "@radix-ui/colors/black-alpha.css";
+
+/* reset */
+button {
+  all: unset;
+}
+
+.SwitchRoot {
+  width: 42px;
+  height: 25px;
+  background-color: var(--black-a9);
+  border-radius: 9999px;
+  position: relative;
+  box-shadow: 0 2px 10px var(--black-a7);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.SwitchRoot:focus {
+  box-shadow: 0 0 0 2px black;
+}
+.SwitchRoot[data-state="checked"] {
+  background-color: black;
+}
+
+.SwitchThumb {
+  display: block;
+  width: 21px;
+  height: 21px;
+  background-color: white;
+  border-radius: 9999px;
+  box-shadow: 0 2px 2px var(--black-a7);
+  transition: transform 100ms;
+  transform: translateX(2px);
+  will-change: transform;
+}
+.SwitchThumb[data-state="checked"] {
+  transform: translateX(19px);
+}
+
+.Label {
+  color: white;
+  font-size: 15px;
+  line-height: 1;
+}
+```
+
+</TabItem>
+</Tabs>
+
+## 특징
+
+![checkbox icon](../../static/img/checkboxicon.png) 완전한 키보드 탐색
+
+![checkbox icon](../../static/img/checkboxicon.png) 제어 또는 비제어 가능
+
+export const Highlight = ({ children, color }) => (
+  <span style={{ color: color }}>{children}</span>
+);
+
+## <Highlight color='#1C5AEC'>설치</Highlight>
+
+커맨드라인에서 컴포넌트를 설치하세요.
+
+```bash
+npm install @radix-ui/react-switch
+```
+
+## <Highlight color='#1C5AEC'>구성</Highlight>
+
+모든 구성요소를 가져와서 조합하세요.
+
+```jsx
+import * as Switch from "@radix-ui/react-switch";
+
+export default () => (
+  <Switch.Root>
+    <Switch.Thumb />
+  </Switch.Root>
+);
+```
+
+## <Highlight color='#1C5AEC'>API 참조</Highlight>
+
+### <Highlight color='#1C5AEC'>Root</Highlight>
+
+Switch의 모든 부품을 포함합니다. 이벤트가 올바르게 전파되는지 확인하기 위해 `form` 내에서 사용될 때 `input`도 렌더링됩니다.
+
+<PropTable api={switchAPI} category="root" />
+<DataAttributeTable api={switchAPI} category="root" />
+
+### <Highlight color='#1C5AEC'>Thumb</Highlight>
+
+스위치가 켜져 있는지 꺼졌는지 시각적으로 표시하는 데 사용됩니다.
+
+<PropTable api={switchAPI} category="thumb" />
+<DataAttributeTable api={switchAPI} category="thumb" />
+
+## <Highlight color='#1C5AEC'>접근성</Highlight>
+
+[`Switch role requirements`](https://www.w3.org/WAI/ARIA/apg/patterns/switch/)을 준수합니다.
+
+### <Highlight color='#1C5AEC'>키보드 상호작용</Highlight>
+
+<KeyboardInteractionTable api={switchAPI} category="keyboardInteractions" />

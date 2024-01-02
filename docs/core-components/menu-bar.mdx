@@ -1,0 +1,912 @@
+---
+sidebar_position: 13
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import PropTable from "../../src/components/table/PropTable.js";
+import DataAttributeTable from "../../src/components/table/DataAttributeTable.js";
+import CssVariableTable from "../../src/components/table/CssVariableTable.js";
+import KeyboardInteractionTable from "../../src/components/table/KeyboardInteractionTable.js";
+import menuBarAPI from "../data/menu-bar.ts";
+import MenubarDemo from "../../src/components/core-components/MenubarDemo.jsx";
+
+# Menu Bar
+
+일관된 명령 집합에 신속하게 액세스할 수 있는 데스크톱 응용프로그램에 일반적으로 사용되는 시각적 지속 메뉴입니다.
+
+<MenubarDemo />
+
+<Tabs>
+<TabItem value="js" label="index.js">
+
+```jsx
+import React from "react";
+import * as Menubar from "@radix-ui/react-menubar";
+import {
+  CheckIcon,
+  ChevronRightIcon,
+  DotFilledIcon,
+} from "@radix-ui/react-icons";
+import "./styles.css";
+
+const RADIO_ITEMS = ["Andy", "Benoît", "Luis"];
+const CHECK_ITEMS = ["Always Show Bookmarks Bar", "Always Show Full URLs"];
+
+const MenubarDemo = () => {
+  const [checkedSelection, setCheckedSelection] = React.useState([
+    CHECK_ITEMS[1],
+  ]);
+  const [radioSelection, setRadioSelection] = React.useState(RADIO_ITEMS[2]);
+
+  return (
+    <Menubar.Root className="MenubarRoot">
+      <Menubar.Menu>
+        <Menubar.Trigger className="MenubarTrigger">File</Menubar.Trigger>
+        <Menubar.Portal>
+          <Menubar.Content
+            className="MenubarContent"
+            align="start"
+            sideOffset={5}
+            alignOffset={-3}
+          >
+            <Menubar.Item className="MenubarItem">
+              New Tab <div className="RightSlot">⌘ T</div>
+            </Menubar.Item>
+            <Menubar.Item className="MenubarItem">
+              New Window <div className="RightSlot">⌘ N</div>
+            </Menubar.Item>
+            <Menubar.Item className="MenubarItem" disabled>
+              New Incognito Window
+            </Menubar.Item>
+            <Menubar.Separator className="MenubarSeparator" />
+            <Menubar.Sub>
+              <Menubar.SubTrigger className="MenubarSubTrigger">
+                Share
+                <div className="RightSlot">
+                  <ChevronRightIcon />
+                </div>
+              </Menubar.SubTrigger>
+              <Menubar.Portal>
+                <Menubar.SubContent
+                  className="MenubarSubContent"
+                  alignOffset={-5}
+                >
+                  <Menubar.Item className="MenubarItem">
+                    Email Link
+                  </Menubar.Item>
+                  <Menubar.Item className="MenubarItem">Messages</Menubar.Item>
+                  <Menubar.Item className="MenubarItem">Notes</Menubar.Item>
+                </Menubar.SubContent>
+              </Menubar.Portal>
+            </Menubar.Sub>
+            <Menubar.Separator className="MenubarSeparator" />
+            <Menubar.Item className="MenubarItem">
+              Print… <div className="RightSlot">⌘ P</div>
+            </Menubar.Item>
+          </Menubar.Content>
+        </Menubar.Portal>
+      </Menubar.Menu>
+
+      <Menubar.Menu>
+        <Menubar.Trigger className="MenubarTrigger">Edit</Menubar.Trigger>
+        <Menubar.Portal>
+          <Menubar.Content
+            className="MenubarContent"
+            align="start"
+            sideOffset={5}
+            alignOffset={-3}
+          >
+            <Menubar.Item className="MenubarItem">
+              Undo <div className="RightSlot">⌘ Z</div>
+            </Menubar.Item>
+            <Menubar.Item className="MenubarItem">
+              Redo <div className="RightSlot">⇧ ⌘ Z</div>
+            </Menubar.Item>
+            <Menubar.Separator className="MenubarSeparator" />
+            <Menubar.Sub>
+              <Menubar.SubTrigger className="MenubarSubTrigger">
+                Find
+                <div className="RightSlot">
+                  <ChevronRightIcon />
+                </div>
+              </Menubar.SubTrigger>
+
+              <Menubar.Portal>
+                <Menubar.SubContent
+                  className="MenubarSubContent"
+                  alignOffset={-5}
+                >
+                  <Menubar.Item className="MenubarItem">
+                    Search the web…
+                  </Menubar.Item>
+                  <Menubar.Separator className="MenubarSeparator" />
+                  <Menubar.Item className="MenubarItem">Find…</Menubar.Item>
+                  <Menubar.Item className="MenubarItem">Find Next</Menubar.Item>
+                  <Menubar.Item className="MenubarItem">
+                    Find Previous
+                  </Menubar.Item>
+                </Menubar.SubContent>
+              </Menubar.Portal>
+            </Menubar.Sub>
+            <Menubar.Separator className="MenubarSeparator" />
+            <Menubar.Item className="MenubarItem">Cut</Menubar.Item>
+            <Menubar.Item className="MenubarItem">Copy</Menubar.Item>
+            <Menubar.Item className="MenubarItem">Paste</Menubar.Item>
+          </Menubar.Content>
+        </Menubar.Portal>
+      </Menubar.Menu>
+
+      <Menubar.Menu>
+        <Menubar.Trigger className="MenubarTrigger">View</Menubar.Trigger>
+        <Menubar.Portal>
+          <Menubar.Content
+            className="MenubarContent"
+            align="start"
+            sideOffset={5}
+            alignOffset={-14}
+          >
+            {CHECK_ITEMS.map((item) => (
+              <Menubar.CheckboxItem
+                className="MenubarCheckboxItem inset"
+                key={item}
+                checked={checkedSelection.includes(item)}
+                onCheckedChange={() =>
+                  setCheckedSelection((current) =>
+                    current.includes(item)
+                      ? current.filter((el) => el !== item)
+                      : current.concat(item)
+                  )
+                }
+              >
+                <Menubar.ItemIndicator className="MenubarItemIndicator">
+                  <CheckIcon />
+                </Menubar.ItemIndicator>
+                {item}
+              </Menubar.CheckboxItem>
+            ))}
+            <Menubar.Separator className="MenubarSeparator" />
+            <Menubar.Item className="MenubarItem inset">
+              Reload <div className="RightSlot">⌘ R</div>
+            </Menubar.Item>
+            <Menubar.Item className="MenubarItem inset" disabled>
+              Force Reload <div className="RightSlot">⇧ ⌘ R</div>
+            </Menubar.Item>
+            <Menubar.Separator className="MenubarSeparator" />
+            <Menubar.Item className="MenubarItem inset">
+              Toggle Fullscreen
+            </Menubar.Item>
+            <Menubar.Separator className="MenubarSeparator" />
+            <Menubar.Item className="MenubarItem inset">
+              Hide Sidebar
+            </Menubar.Item>
+          </Menubar.Content>
+        </Menubar.Portal>
+      </Menubar.Menu>
+
+      <Menubar.Menu>
+        <Menubar.Trigger className="MenubarTrigger">Profiles</Menubar.Trigger>
+        <Menubar.Portal>
+          <Menubar.Content
+            className="MenubarContent"
+            align="start"
+            sideOffset={5}
+            alignOffset={-14}
+          >
+            <Menubar.RadioGroup
+              value={radioSelection}
+              onValueChange={setRadioSelection}
+            >
+              {RADIO_ITEMS.map((item) => (
+                <Menubar.RadioItem
+                  className="MenubarRadioItem inset"
+                  key={item}
+                  value={item}
+                >
+                  <Menubar.ItemIndicator className="MenubarItemIndicator">
+                    <DotFilledIcon />
+                  </Menubar.ItemIndicator>
+                  {item}
+                </Menubar.RadioItem>
+              ))}
+              <Menubar.Separator className="MenubarSeparator" />
+              <Menubar.Item className="MenubarItem inset">Edit…</Menubar.Item>
+              <Menubar.Separator className="MenubarSeparator" />
+              <Menubar.Item className="MenubarItem inset">
+                Add Profile…
+              </Menubar.Item>
+            </Menubar.RadioGroup>
+          </Menubar.Content>
+        </Menubar.Portal>
+      </Menubar.Menu>
+    </Menubar.Root>
+  );
+};
+
+export default MenubarDemo;
+```
+
+</TabItem>
+<TabItem value="css" label="styles.css">
+
+```css
+@import "@radix-ui/colors/black-alpha.css";
+@import "@radix-ui/colors/mauve.css";
+@import "@radix-ui/colors/violet.css";
+
+/* reset */
+button {
+  all: unset;
+}
+
+.MenubarRoot {
+  display: flex;
+  background-color: white;
+  padding: 3px;
+  border-radius: 6px;
+  box-shadow: 0 2px 10px var(--black-a7);
+}
+
+.MenubarTrigger {
+  padding: 8px 12px;
+  outline: none;
+  user-select: none;
+  font-weight: 500;
+  line-height: 1;
+  border-radius: 4px;
+  color: var(--violet-11);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2px;
+}
+
+.MenubarTrigger[data-highlighted],
+.MenubarTrigger[data-state="open"] {
+  background-color: var(--violet-4);
+}
+
+.MenubarContent,
+.MenubarSubContent {
+  min-width: 220px;
+  background-color: white;
+  border-radius: 6px;
+  padding: 5px;
+  box-shadow: 0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px
+      rgba(22, 23, 24, 0.2);
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.MenubarItem,
+.MenubarSubTrigger,
+.MenubarCheckboxItem,
+.MenubarRadioItem {
+  all: unset;
+  font-size: 13px;
+  line-height: 1;
+  color: var(--violet-11);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  height: 25px;
+  padding: 0 10px;
+  position: relative;
+  user-select: none;
+}
+
+.MenubarItem.inset,
+.MenubarSubTrigger.inset,
+.MenubarCheckboxItem.inset,
+.MenubarRadioItem.inset {
+  padding-left: 20px;
+}
+
+.MenubarItem[data-state="open"],
+.MenubarSubTrigger[data-state="open"] {
+  background-color: var(--violet-4);
+  color: var(--violet-11);
+}
+
+.MenubarItem[data-highlighted],
+.MenubarSubTrigger[data-highlighted],
+.MenubarCheckboxItem[data-highlighted],
+.MenubarRadioItem[data-highlighted] {
+  background-image: linear-gradient(
+    135deg,
+    var(--violet-9) 0%,
+    var(--violet-10) 100%
+  );
+  color: var(--violet-1);
+}
+
+.MenubarItem[data-disabled],
+.MenubarSubTrigger[data-disabled],
+.MenubarCheckboxItem[data-disabled],
+.MenubarRadioItem[data-disabled] {
+  color: var(--mauve-8);
+  pointer-events: none;
+}
+
+.MenubarItemIndicator {
+  position: absolute;
+  left: 0;
+  width: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.MenubarSeparator {
+  height: 1px;
+  background-color: var(--violet-6);
+  margin: 5px;
+}
+
+.RightSlot {
+  margin-left: auto;
+  padding-left: 20px;
+  color: var(--mauve-9);
+}
+
+[data-highlighted] > .RightSlot {
+  color: white;
+}
+
+[data-disabled] > .RightSlot {
+  color: var(--mauve-8);
+}
+```
+
+</TabItem>
+</Tabs>
+
+## 특징
+
+![checkbox icon](../../static/img/checkboxicon.png) 제어 또는 비제어 가능
+
+![checkbox icon](../../static/img/checkboxicon.png) 구성 가능한 판독 방향으로 하위 메뉴를 지원
+
+![checkbox icon](../../static/img/checkboxicon.png) Item, Label, Item 그룹 지원
+
+![checkbox icon](../../static/img/checkboxicon.png) 확인 가능한 항목(단일 또는 복수)을 지원
+
+![checkbox icon](../../static/img/checkboxicon.png) 측면, 정렬, 오프셋, 충돌 처리를 사용자 정의
+
+![checkbox icon](../../static/img/checkboxicon.png) 선택적으로 포인팅 화살표를 렌더링
+
+![checkbox icon](../../static/img/checkboxicon.png) 포커스의 완벽한 관리
+
+![checkbox icon](../../static/img/checkboxicon.png) 완전한 키보드 탐색
+
+![checkbox icon](../../static/img/checkboxicon.png) 자동 지원을 입력
+
+export const Highlight = ({ children, color }) => (
+  <span style={{ color: color }}>{children}</span>
+);
+
+## <Highlight color='#1C5AEC'>설치</Highlight>
+
+커맨드라인에서 컴포넌트를 설치하세요.
+
+```bash
+npm install @radix-ui/react-menubar
+```
+
+## <Highlight color='#1C5AEC'>구성</Highlight>
+
+모든 구성요소를 가져와서 조합하세요.
+
+```jsx
+import * as Menubar from "@radix-ui/react-menubar";
+
+export default () => (
+  <Menubar.Root>
+    <Menubar.Menu>
+      <Menubar.Trigger />
+      <Menubar.Portal>
+        <Menubar.Content>
+          <Menubar.Label />
+          <Menubar.Item />
+
+          <Menubar.Group>
+            <Menubar.Item />
+          </Menubar.Group>
+
+          <Menubar.CheckboxItem>
+            <Menubar.ItemIndicator />
+          </Menubar.CheckboxItem>
+
+          <Menubar.RadioGroup>
+            <Menubar.RadioItem>
+              <Menubar.ItemIndicator />
+            </Menubar.RadioItem>
+          </Menubar.RadioGroup>
+
+          <Menubar.Sub>
+            <Menubar.SubTrigger />
+            <Menubar.Portal>
+              <Menubar.SubContent />
+            </Menubar.Portal>
+          </Menubar.Sub>
+
+          <Menubar.Separator />
+          <Menubar.Arrow />
+        </Menubar.Content>
+      </Menubar.Portal>
+    </Menubar.Menu>
+  </Menubar.Root>
+);
+```
+
+## <Highlight color='#1C5AEC'>API 참조</Highlight>
+
+### <Highlight color='#1C5AEC'>Root</Highlight>
+
+Menubar의 모든 부분을 포함합니다.
+
+<PropTable api={menuBarAPI} category="root" />
+
+### <Highlight color='#1C5AEC'>Menu</Highlight>
+
+최상위 메뉴 항목으로, 내용 조합이 있는 트리거를 포함합니다.
+
+<PropTable api={menuBarAPI} category="menu" />
+
+### <Highlight color='#1C5AEC'>Trigger</Highlight>
+
+콘텐츠를 토글하는 버튼입니다. 기본적으로 `Menubar.Content`는 트리거에 대해 자신을 배치합니다.
+
+<PropTable api={menuBarAPI} category="trigger" />
+<DataAttributeTable api={menuBarAPI} category="trigger" />
+
+### <Highlight color='#1C5AEC'>Portal</Highlight>
+
+콘텐츠 부분을 `body`에 포팅합니다.
+
+<PropTable api={menuBarAPI} category="portal" />
+
+### <Highlight color='#1C5AEC'>Content</Highlight>
+
+메뉴가 열렸을 때 나타나는 구성요소입니다.
+
+<PropTable api={menuBarAPI} category="content" />
+<DataAttributeTable api={menuBarAPI} category="content" />
+<CssVariableTable api={menuBarAPI} category="content" />
+
+### <Highlight color='#1C5AEC'>Arrow</Highlight>
+
+Menubar 메뉴와 함께 렌더링할 선택적 화살표 요소입니다.
+이를 사용하여 트리거를 `Menubar.Content`와 시각적으로 연결할 수 있습니다.
+`Menubar.Content` 안에서 렌더링해야 합니다.
+
+<PropTable api={menuBarAPI} category="arrow" />
+
+### <Highlight color='#1C5AEC'>Item</Highlight>
+
+Menubar 항목이 들어 있는 구성 요소입니다.
+
+<PropTable api={menuBarAPI} category="item" />
+<DataAttributeTable api={menuBarAPI} category="item" />
+
+### <Highlight color='#1C5AEC'>Group</Highlight>
+
+여러 개의 `Menubar.Item`을 그룹화하는 데 사용됩니다.
+
+<PropTable api={menuBarAPI} category="group" />
+
+### <Highlight color='#1C5AEC'>Label</Highlight>
+
+라벨을 렌더링하는 데 사용됩니다. 화살표 키를 사용하면 초점을 맞출 수 없습니다.
+
+<PropTable api={menuBarAPI} category="label" />
+
+### <Highlight color='#1C5AEC'>CheckboxItem</Highlight>
+
+Checkbox처럼 제어하고 렌더링할 수 있는 아이템입니다.
+
+<PropTable api={menuBarAPI} category="checkboxitem" />
+<DataAttributeTable api={menuBarAPI} category="checkboxitem" />
+
+### <Highlight color='#1C5AEC'>RadioGroup</Highlight>
+
+여러 개의 `Menubar.RadioItem`을 그룹화하는 데 사용됩니다.
+
+<PropTable api={menuBarAPI} category="radiogroup" />
+
+### <Highlight color='#1C5AEC'>RadioItem</Highlight>
+
+Radio처럼 제어하고 렌더링할 수 있는 아이템입니다.
+
+<PropTable api={menuBarAPI} category="radioitem" />
+<DataAttributeTable api={menuBarAPI} category="radioitem" />
+
+### <Highlight color='#1C5AEC'>ItemIndicator</Highlight>
+
+상위 `Menubar.CheckboxItem` 또는 `Menubar.RadioItem`이 선택되어 있을 때 렌더링합니다.
+이 요소를 직접 스타일링하거나 아이콘을 넣을 래퍼로 사용하거나 둘 다 사용할 수 있습니다.
+
+<PropTable api={menuBarAPI} category="itemindicator" />
+<DataAttributeTable api={menuBarAPI} category="itemindicator" />
+
+### <Highlight color='#1C5AEC'>Separator</Highlight>
+
+이 요소를 직접 스타일링하거나 아이콘을 넣을 래퍼로 사용하거나 둘 다 사용할 수 있습니다.
+
+<PropTable api={menuBarAPI} category="separator" />
+
+### <Highlight color='#1C5AEC'>Sub</Highlight>
+
+Submenu의 모든 부분을 포함합니다.
+
+<PropTable api={menuBarAPI} category="sub" />
+
+### <Highlight color='#1C5AEC'>SubTrigger</Highlight>
+
+Submenu를 여는 항목입니다. `Menubar.Sub` 내에서 렌더링해야 합니다.
+
+<PropTable api={menuBarAPI} category="subtrigger" />
+<DataAttributeTable api={menuBarAPI} category="subtrigger" />
+
+### <Highlight color='#1C5AEC'>SubContent</Highlight>
+
+Submenu가 열렸을 때 나타나는 구성 요소입니다. `Menubar.Sub` 내에서 렌더링해야 합니다.
+
+<PropTable api={menuBarAPI} category="subcontent" />
+<DataAttributeTable api={menuBarAPI} category="subcontent" />
+<CssVariableTable api={menuBarAPI} category="subcontent" />
+
+## <Highlight color='#1C5AEC'>예</Highlight>
+
+#### submenu 포함
+
+`Menubar.Sub`을 각 파트와 함께 사용하여 하위 메뉴를 만들 수 있습니다.
+
+```jsx
+<Menubar.Root>
+  <Menubar.Menu>
+    <Menubar.Trigger>…</Menubar.Trigger>
+    <Menubar.Portal>
+      <Menubar.Content>
+        <Menubar.Item>…</Menubar.Item>
+        <Menubar.Item>…</Menubar.Item>
+        <Menubar.Separator />
+        <Menubar.Sub>
+          <Menubar.SubTrigger>Sub menu →</Menubar.SubTrigger>
+          <Menubar.Portal>
+            <Menubar.SubContent>
+              <Menubar.Item>Sub menu item</Menubar.Item>
+              <Menubar.Item>Sub menu item</Menubar.Item>
+              <Menubar.Arrow />
+            </Menubar.SubContent>
+          </Menubar.Portal>
+        </Menubar.Sub>
+        <Menubar.Separator />
+        <Menubar.Item>…</Menubar.Item>
+      </Menubar.Content>
+    </Menubar.Portal>
+  </Menubar.Menu>
+</Menubar.Root>
+```
+
+#### 비활성화된 항목 포함
+
+`data-disabled` 속성을 통해 비활성화된 항목에 특수 스타일을 추가할 수 있습니다.
+
+```jsx
+// index.jsx
+import * as Menubar from "@radix-ui/react-menubar";
+import "./styles.css";
+
+export default () => (
+  <Menubar.Root>
+    <Menubar.Menu>
+      <Menubar.Trigger>…</Menubar.Trigger>
+      <Menubar.Portal>
+        <Menubar.Content>
+          <Menubar.Item className="MenubarItem" disabled>
+            …
+          </Menubar.Item>
+          <Menubar.Item className="MenubarItem">…</Menubar.Item>
+        </Menubar.Content>
+      </Menubar.Portal>
+    </Menubar.Menu>
+  </Menubar.Root>
+);
+```
+
+```css
+/* styles.css */
+.MenubarItem[data-disabled] {
+  color: gainsboro;
+}
+```
+
+#### separator 포함
+
+항목 사이에 Separator를 추가하여 분리합니다.
+
+```jsx
+<Menubar.Root>
+  <Menubar.Menu>
+    <Menubar.Trigger>…</Menubar.Trigger>
+    <Menubar.Portal>
+      <Menubar.Content>
+        <Menubar.Item>…</Menubar.Item>
+        <Menubar.Separator />
+        <Menubar.Item>…</Menubar.Item>
+        <Menubar.Separator />
+        <Menubar.Item>…</Menubar.Item>
+      </Menubar.Content>
+    </Menubar.Portal>
+  </Menubar.Menu>
+</Menubar.Root>
+```
+
+#### label 포함
+
+Label을 사용하여 단면에 레이블을 지정할 수 있습니다.
+
+```jsx
+<Menubar.Root>
+  <Menubar.Menu>
+    <Menubar.Trigger>…</Menubar.Trigger>
+    <Menubar.Portal>
+      <Menubar.Content>
+        <Menubar.Label>Label</Menubar.Label>
+        <Menubar.Item>…</Menubar.Item>
+        <Menubar.Item>…</Menubar.Item>
+        <Menubar.Item>…</Menubar.Item>
+      </Menubar.Content>
+    </Menubar.Portal>
+  </Menubar.Menu>
+</Menubar.Root>
+```
+
+#### checkbox item 포함
+
+`CheckboxItem`을 사용하여 체크할 수 있는 항목을 추가합니다.
+
+```jsx
+import React from "react";
+import { CheckIcon } from "@radix-ui/react-icons";
+import * as Menubar from "@radix-ui/react-menubar";
+
+export default () => {
+  const [checked, setChecked] = React.useState(true);
+
+  return (
+    <Menubar.Root>
+      <Menubar.Menu>
+        <Menubar.Trigger>…</Menubar.Trigger>
+        <Menubar.Portal>
+          <Menubar.Content>
+            <Menubar.Item>…</Menubar.Item>
+            <Menubar.Item>…</Menubar.Item>
+            <Menubar.Separator />
+            <Menubar.CheckboxItem
+              checked={checked}
+              onCheckedChange={setChecked}
+            >
+              <Menubar.ItemIndicator>
+                <CheckIcon />
+              </Menubar.ItemIndicator>
+              Checkbox item
+            </Menubar.CheckboxItem>
+          </Menubar.Content>
+        </Menubar.Portal>
+      </Menubar.Menu>
+    </Menubar.Root>
+  );
+};
+```
+
+#### radio item 포함
+
+`RadioGroup` 및 `RadioItem`을 사용하여 다른 항목에서 확인할 수 있는 항목을 추가합니다.
+
+```jsx
+import React from "react";
+import { CheckIcon } from "@radix-ui/react-icons";
+import * as Menubar from "@radix-ui/react-menubar";
+
+export default () => {
+  const [color, setColor] = React.useState("blue");
+
+  return (
+    <Menubar.Root>
+      <Menubar.Menu>
+        <Menubar.Trigger>…</Menubar.Trigger>
+        <Menubar.Portal>
+          <Menubar.Content>
+            <Menubar.RadioGroup value={color} onValueChange={setColor}>
+              <Menubar.RadioItem value="red">
+                <Menubar.ItemIndicator>
+                  <CheckIcon />
+                </Menubar.ItemIndicator>
+                Red
+              </Menubar.RadioItem>
+              <Menubar.RadioItem value="blue">
+                <Menubar.ItemIndicator>
+                  <CheckIcon />
+                </Menubar.ItemIndicator>
+                Blue
+              </Menubar.RadioItem>
+            </Menubar.RadioGroup>
+          </Menubar.Content>
+        </Menubar.Portal>
+      </Menubar.Menu>
+    </Menubar.Root>
+  );
+};
+```
+
+#### 복잡한 항목 포함
+
+Image와 같은 추가 장식 요소를 `Item` 부분에 추가할 수 있습니다.
+
+```jsx
+import * as Menubar from "@radix-ui/react-menubar";
+
+export default () => (
+  <Menubar.Root>
+    <Menubar.Menu>
+      <Menubar.Trigger>…</Menubar.Trigger>
+      <Menubar.Portal>
+        <Menubar.Content>
+          <Menubar.Item>
+            <img src="…" />
+            Adolfo Hess
+          </Menubar.Item>
+          <Menubar.Item>
+            <img src="…" />
+            Miyah Myles
+          </Menubar.Item>
+        </Menubar.Content>
+      </Menubar.Portal>
+    </Menubar.Menu>
+  </Menubar.Root>
+);
+```
+
+#### 내용/하위 내용 크기 제한
+
+Content (또는 sub-content)의 너비가 Trigger (또는 sub-trigger)의 너비와 일치하도록 제한할 수 있습니다.
+Viewport를 초과하지 않도록 높이를 제한할 수도 있습니다.
+이를 지원하기 위해 `--radix-menubar-trigger-width` 및 `--radix-menubar-content-available-height`와 같은 여러 CSS 사용자 지정 속성을 노출합니다.
+이를 사용하여 콘텐츠 차원을 제한합니다.
+
+```jsx
+// index.jsx
+import * as Menubar from "@radix-ui/react-menubar";
+import "./styles.css";
+
+export default () => (
+  <Menubar.Root>
+    <Menubar.Trigger>…</Menubar.Trigger>
+    <Menubar.Portal>
+      <Menubar.Content className="MenubarContent" sideOffset={5}>
+        …
+      </Menubar.Content>
+    </Menubar.Portal>
+  </Menubar.Root>
+);
+```
+
+```css
+/* styles.css */
+.MenubarContent {
+  width: var(--radix-menubar-trigger-width);
+  max-height: var(--radix-menubar-content-available-height);
+}
+```
+
+#### 원본 인식 애니메이션
+
+CSS 사용자 지정 속성 `--radix-menubar-content-transform-origin`을 노출합니다.
+이를 사용하여 `side`, `sideOffset`, `align`, `alignOffset` 및 충돌을 기준으로 계산된 원본에서 컨텐츠를 애니메이션화합니다.
+
+```jsx
+// index.jsx
+import * as Menubar from "@radix-ui/react-menubar";
+import "./styles.css";
+
+export default () => (
+  <Menubar.Root>
+    <Menubar.Menu>
+      <Menubar.Trigger>…</Menubar.Trigger>
+      <Menubar.Portal>
+        <Menubar.Content className="MenubarContent">…</Menubar.Content>
+      </Menubar.Portal>
+    </Menubar.Menu>
+  </Menubar.Root>
+);
+```
+
+```css
+/* styles.css */
+.MenubarContent {
+  transform-origin: var(--radix-menubar-content-transform-origin);
+  animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+```
+
+#### 충돌 인식 애니메이션
+
+`data-side`와 `data-align` 속성을 사용합니다.
+이 값은 충돌을 반영하기 위해 런타임에 변경되며, 충돌 및 방향 인식 애니메이션을 만들 때 사용합니다.
+
+```jsx
+// index.jsx
+import * as Menubar from "@radix-ui/react-menubar";
+import "./styles.css";
+
+export default () => (
+  <Menubar.Root>
+    <Menubar.Menu>
+      <Menubar.Trigger>…</Menubar.Trigger>
+      <Menubar.Portal>
+        <Menubar.Content className="MenubarContent">…</Menubar.Content>
+      </Menubar.Portal>
+    </Menubar.Menu>
+  </Menubar.Root>
+);
+```
+
+```css
+/* styles.css */
+.MenubarContent {
+  animation-duration: 0.6s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+.MenubarContent[data-side="top"] {
+  animation-name: slideUp;
+}
+.MenubarContent[data-side="bottom"] {
+  animation-name: slideDown;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+```
+
+## <Highlight color='#1C5AEC'>접근성</Highlight>
+
+[`Menu Button WAI-ARIA design pattern`](https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/)을 고수하며
+`roving tabindex`를 사용하여 메뉴 항목 간 포커스 이동을 관리합니다
+
+### <Highlight color='#1C5AEC'>키보드 상호작용</Highlight>
+
+<KeyboardInteractionTable api={menuBarAPI} category="keyboardInteractions" />

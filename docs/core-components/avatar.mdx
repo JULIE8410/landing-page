@@ -1,0 +1,176 @@
+---
+sidebar_position: 4
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import PropTable from "../../src/components/table/PropTable.js";
+import avatarAPI from "../data/avatar.ts";
+import AvatarDemo from "../../src/components/core-components/AvatarDemo.jsx";
+
+# Avatar
+
+사용자를 나타내기 위한 폴백(fallback)을 갖는 이미지 요소입니다.
+
+<AvatarDemo />
+
+<Tabs>
+<TabItem value="js" label="index.js">
+
+```jsx
+import React from "react";
+import * as Avatar from "@radix-ui/react-avatar";
+import "./styles.css";
+const AvatarDemo = () => (
+  <div style={{ display: "flex", gap: 20 }}>
+    <Avatar.Root className="AvatarRoot">
+      <Avatar.Image
+        className="AvatarImage"
+        src="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?&w=128&h=128&dpr=2&q=80"
+        alt="Colm Tuite"
+      />
+      <Avatar.Fallback className="AvatarFallback" delayMs={600}>
+        CT
+      </Avatar.Fallback>
+    </Avatar.Root>
+    <Avatar.Root className="AvatarRoot">
+      <Avatar.Image
+        className="AvatarImage"
+        src="https://images.unsplash.com/photo-1511485977113-f34c92461ad9?ixlib=rb-1.2.1&w=128&h=128&dpr=2&q=80"
+        alt="Pedro Duarte"
+      />
+      <Avatar.Fallback className="AvatarFallback" delayMs={600}>
+        JD
+      </Avatar.Fallback>
+    </Avatar.Root>
+    <Avatar.Root className="AvatarRoot">
+      <Avatar.Fallback className="AvatarFallback">PD</Avatar.Fallback>
+    </Avatar.Root>
+  </div>
+);
+export default AvatarDemo;
+```
+
+</TabItem>
+<TabItem value="css" label="styles.css">
+
+```css
+@import "@radix-ui/colors/black-alpha.css";
+@import "@radix-ui/colors/violet.css";
+.AvatarRoot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  overflow: hidden;
+  user-select: none;
+  width: 45px;
+  height: 45px;
+  border-radius: 100%;
+  background-color: var(--black-a3);
+}
+.AvatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+.AvatarFallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  color: var(--violet-11);
+  font-size: 15px;
+  line-height: 1;
+  font-weight: 500;
+}
+```
+
+</TabItem>
+</Tabs>
+
+## 특징
+
+![checkbox icon](../../static/img/checkboxicon.png) 렌더링 시 이미지 자동 및 수동 제어
+
+![checkbox icon](../../static/img/checkboxicon.png) Fallback 파트는 어떤 children 도 수용가능
+
+![checkbox icon](../../static/img/checkboxicon.png) 선택적으로 fallback 렌더링을 지연시켜 콘텐츠가 깜박이지 않도록 함
+
+export const Highlight = ({ children, color }) => (
+  <span style={{ color: color }}>{children}</span>
+);
+
+## <Highlight color='#1C5AEC'>설치</Highlight>
+
+커맨드라인에서 컴포넌트를 설치하세요.
+
+```bash
+npm install @radix-ui/react-avatar
+```
+
+## <Highlight color='#1C5AEC'>구성</Highlight>
+
+모든 파트를 가져와서 조합하세요.
+
+```jsx
+import * as Avatar from "@radix-ui/react-avatar";
+export default () => (
+  <Avatar.Root>
+    <Avatar.Image />
+    <Avatar.Fallback />
+  </Avatar.Root>
+);
+```
+
+## <Highlight color='#1C5AEC'>API 참조</Highlight>
+
+### <Highlight color='#1C5AEC'>Root</Highlight>
+
+Avatar의 모든 부분을 포함합니다.
+
+<PropTable api={avatarAPI} category="root" />
+
+### <Highlight color='#1C5AEC'>Image</Highlight>
+
+렌더링할 이미지입니다. 기본적으로 로드된 경우에만 렌더링됩니다.
+제어가 더 필요한 경우 `onLoadingStatusChange` 핸들러를 사용할 수 있습니다.
+
+<PropTable api={avatarAPI} category="image" />
+
+### <Highlight color='#1C5AEC'>Fallback</Highlight>
+
+이미지가 로드되지 않았을 때 렌더링하는 요소입니다.
+이는 로드 중이거나 오류가 발생한 경우를 의미합니다.
+로드 중에 플래시가 나타나면 렌더링을 지연시키는 `delayMs` prop을 제공하여
+연결 속도가 느린 사용자만 렌더링할 수 있습니다.
+자세한 제어 방법은 `Avatar.Image`의 `onLoadingStatusChange` 핸들러를 사용하십시오
+
+<PropTable api={avatarAPI} category="fallback" />
+
+## <Highlight color='#1C5AEC'>예</Highlight>
+
+#### 도구 설명으로 클릭 가능한 Avatar
+
+추가 정보를 표시하기 위해 Tooltip으로 아바타를 구성할 수 있습니다.
+
+```jsx
+import * as Avatar from "@radix-ui/react-avatar";
+import * as Tooltip from "@radix-ui/react-tooltip";
+
+export default () => (
+  <Tooltip.Root>
+    <Tooltip.Trigger>
+      <Avatar.Root>…</Avatar.Root>
+    </Tooltip.Trigger>
+
+    <Tooltip.Content side="top">
+      Tooltip content
+      <Tooltip.Arrow />
+    </Tooltip.Content>
+  </Tooltip.Root>
+);
+```

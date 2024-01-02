@@ -1,0 +1,219 @@
+---
+sidebar_position: 26
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import PropTable from "../../src/components/table/PropTable.js";
+import DataAttributeTable from "../../src/components/table/DataAttributeTable.js";
+import KeyboardInteractionTable from "../../src/components/table/KeyboardInteractionTable.js";
+import toggleGroupAPI from "../data/toggle-group.ts";
+import ToggleGroupDemo from "../../src/components/core-components/ToggleGroupDemo.jsx";
+
+# Toggle Group
+
+켜거나 끌 수 있는 두가지 상태의 버튼 그룹입니다.
+
+<ToggleGroupDemo />
+
+<Tabs>
+<TabItem value="js" label="index.js">
+
+```jsx
+import React from "react";
+import * as ToggleGroup from "@radix-ui/react-toggle-group";
+import {
+  TextAlignLeftIcon,
+  TextAlignCenterIcon,
+  TextAlignRightIcon,
+} from "@radix-ui/react-icons";
+import "./styles.css";
+
+const ToggleGroupDemo = () => (
+  <ToggleGroup.Root
+    className="ToggleGroup"
+    type="single"
+    defaultValue="center"
+    aria-label="Text alignment"
+  >
+    <ToggleGroup.Item
+      className="ToggleGroupItem"
+      value="left"
+      aria-label="Left aligned"
+    >
+      <TextAlignLeftIcon />
+    </ToggleGroup.Item>
+    <ToggleGroup.Item
+      className="ToggleGroupItem"
+      value="center"
+      aria-label="Center aligned"
+    >
+      <TextAlignCenterIcon />
+    </ToggleGroup.Item>
+    <ToggleGroup.Item
+      className="ToggleGroupItem"
+      value="right"
+      aria-label="Right aligned"
+    >
+      <TextAlignRightIcon />
+    </ToggleGroup.Item>
+  </ToggleGroup.Root>
+);
+
+export default ToggleGroupDemo;
+```
+
+</TabItem>
+<TabItem value="css" label="styles.css">
+
+```css
+@import "@radix-ui/colors/black-alpha.css";
+@import "@radix-ui/colors/mauve.css";
+@import "@radix-ui/colors/violet.css";
+
+/* reset */
+button {
+  all: unset;
+}
+
+.ToggleGroup {
+  display: inline-flex;
+  background-color: var(--mauve-6);
+  border-radius: 4px;
+  box-shadow: 0 2px 10px var(--black-a7);
+}
+
+.ToggleGroupItem {
+  background-color: white;
+  color: var(--mauve-11);
+  height: 35px;
+  width: 35px;
+  display: flex;
+  font-size: 15px;
+  line-height: 1;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1px;
+}
+.ToggleGroupItem:first-child {
+  margin-left: 0;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.ToggleGroupItem:last-child {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.ToggleGroupItem:hover {
+  background-color: var(--violet-3);
+}
+.ToggleGroupItem[data-state="on"] {
+  background-color: var(--violet-5);
+  color: var(--violet-11);
+}
+.ToggleGroupItem:focus {
+  position: relative;
+  box-shadow: 0 0 0 2px black;
+}
+```
+
+</TabItem>
+</Tabs>
+
+## 특징
+
+![checkbox icon](../../static/img/checkboxicon.png) 완전한 키보드 탐색
+
+![checkbox icon](../../static/img/checkboxicon.png) 수평/수직 방향 지원
+
+![checkbox icon](../../static/img/checkboxicon.png) 단일 및 다중 누름 버튼 지원
+
+![checkbox icon](../../static/img/checkboxicon.png) 제어 또는 비제어 가능
+
+export const Highlight = ({ children, color }) => (
+  <span style={{ color: color }}>{children}</span>
+);
+
+## <Highlight color='#1C5AEC'>설치</Highlight>
+
+커맨드라인에서 컴포넌트를 설치하세요.
+
+```bash
+npm install @radix-ui/react-toggle-group
+```
+
+## <Highlight color='#1C5AEC'>구성</Highlight>
+
+구성요소를 가져옵니다.
+
+```jsx
+import * as ToggleGroup from "@radix-ui/react-toggle-group";
+
+export default () => (
+  <ToggleGroup.Root>
+    <ToggleGroup.Item />
+  </ToggleGroup.Root>
+);
+```
+
+## <Highlight color='#1C5AEC'>API 참조</Highlight>
+
+### <Highlight color='#1C5AEC'>Root</Highlight>
+
+Toggle group의 모든 부분을 포함합니다.
+
+<PropTable api={toggleGroupAPI} category="root" />
+<DataAttributeTable api={toggleGroupAPI} category="root" />
+
+### <Highlight color='#1C5AEC'>Item</Highlight>
+
+그룹의 항목입니다.
+
+<PropTable api={toggleGroupAPI} category="item" />
+<DataAttributeTable api={toggleGroupAPI} category="item" />
+
+## <Highlight color='#1C5AEC'>예</Highlight>
+
+#### 항상 값이 존재함을 보장
+
+컴포넌트를 제어하여 항상 값이 존재하도록 할 수 있습니다.
+
+```jsx
+import * as React from "react";
+import * as ToggleGroup from "@radix-ui/react-toggle-group";
+
+export default () => {
+  const [value, setValue] = React.useState("left");
+
+  return (
+    <ToggleGroup.Root
+      type="single"
+      value={value}
+      onValueChange={(value) => {
+        if (value) setValue(value);
+      }}
+    >
+      <ToggleGroup.Item value="left">
+        <TextAlignLeftIcon />
+      </ToggleGroup.Item>
+      <ToggleGroup.Item value="center">
+        <TextAlignCenterIcon />
+      </ToggleGroup.Item>
+      <ToggleGroup.Item value="right">
+        <TextAlignRightIcon />
+      </ToggleGroup.Item>
+    </ToggleGroup.Root>
+  );
+};
+```
+
+## <Highlight color='#1C5AEC'>접근성</Highlight>
+
+[`Roving tabindex`](https://www.w3.org/WAI/ARIA/apg/patterns/radio/examples/radio/)를 사용하여 항목 간 포커스 이동을 관리합니다.
+
+### <Highlight color='#1C5AEC'>키보드 상호작용</Highlight>
+
+<KeyboardInteractionTable
+  api={toggleGroupAPI}
+  category="keyboardInteractions"
+/>

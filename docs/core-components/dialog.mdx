@@ -1,0 +1,500 @@
+---
+sidebar_position: 8
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import PropTable from "../../src/components/table/PropTable.js";
+import DataAttributeTable from "../../src/components/table/DataAttributeTable.js";
+import KeyboardInteractionTable from "../../src/components/table/KeyboardInteractionTable.js";
+import dialogAPI from "../data/dialog.ts";
+import DialogDemo from "../../src/components/core-components/DialogDemo.jsx";
+
+# Dialog
+
+기본 창 또는 다른 대화 창에 겹쳐진 창으로, 내용을 비활성으로 만듭니다.
+
+<DialogDemo />
+
+<Tabs>
+<TabItem value="js" label="index.js">
+
+```jsx
+import React from "react";
+import * as Dialog from "@radix-ui/react-dialog";
+import { Cross2Icon } from "@radix-ui/react-icons";
+import "./styles.css";
+
+const DialogDemo = () => (
+  <Dialog.Root>
+    <Dialog.Trigger asChild>
+      <button className="Button violet">Edit profile</button>
+    </Dialog.Trigger>
+    <Dialog.Portal>
+      <Dialog.Overlay className="DialogOverlay" />
+      <Dialog.Content className="DialogContent">
+        <Dialog.Title className="DialogTitle">Edit profile</Dialog.Title>
+        <Dialog.Description className="DialogDescription">
+          Make changes to your profile here. Click save when you're done.
+        </Dialog.Description>
+        <fieldset className="Fieldset">
+          <label className="Label" htmlFor="name">
+            Name
+          </label>
+          <input className="Input" id="name" defaultValue="Pedro Duarte" />
+        </fieldset>
+        <fieldset className="Fieldset">
+          <label className="Label" htmlFor="username">
+            Username
+          </label>
+          <input className="Input" id="username" defaultValue="@peduarte" />
+        </fieldset>
+        <div
+          style={{ display: "flex", marginTop: 25, justifyContent: "flex-end" }}
+        >
+          <Dialog.Close asChild>
+            <button className="Button green">Save changes</button>
+          </Dialog.Close>
+        </div>
+        <Dialog.Close asChild>
+          <button className="IconButton" aria-label="Close">
+            <Cross2Icon />
+          </button>
+        </Dialog.Close>
+      </Dialog.Content>
+    </Dialog.Portal>
+  </Dialog.Root>
+);
+
+export default DialogDemo;
+```
+
+</TabItem>
+<TabItem value="css" label="styles.css">
+
+```css
+@import "@radix-ui/colors/black-alpha.css";
+@import "@radix-ui/colors/green.css";
+@import "@radix-ui/colors/mauve.css";
+@import "@radix-ui/colors/violet.css";
+
+/* reset */
+button,
+fieldset,
+input {
+  all: unset;
+}
+
+.DialogOverlay {
+  background-color: var(--black-a9);
+  position: fixed;
+  inset: 0;
+  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.DialogContent {
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px
+      10px 20px -15px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 450px;
+  max-height: 85vh;
+  padding: 25px;
+  animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.DialogContent:focus {
+  outline: none;
+}
+
+.DialogTitle {
+  margin: 0;
+  font-weight: 500;
+  color: var(--mauve-12);
+  font-size: 17px;
+}
+
+.DialogDescription {
+  margin: 10px 0 20px;
+  color: var(--mauve-11);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.Button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  padding: 0 15px;
+  font-size: 15px;
+  line-height: 1;
+  font-weight: 500;
+  height: 35px;
+}
+.Button.violet {
+  background-color: white;
+  color: var(--violet-11);
+  box-shadow: 0 2px 10px var(--black-a7);
+}
+.Button.violet:hover {
+  background-color: var(--mauve-3);
+}
+.Button.violet:focus {
+  box-shadow: 0 0 0 2px black;
+}
+.Button.green {
+  background-color: var(--green-4);
+  color: var(--green-11);
+}
+.Button.green:hover {
+  background-color: var(--green-5);
+}
+.Button.green:focus {
+  box-shadow: 0 0 0 2px var(--green-7);
+}
+
+.IconButton {
+  font-family: inherit;
+  border-radius: 100%;
+  height: 25px;
+  width: 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--violet-11);
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.IconButton:hover {
+  background-color: var(--violet-4);
+}
+.IconButton:focus {
+  box-shadow: 0 0 0 2px var(--violet-7);
+}
+
+.Fieldset {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.Label {
+  font-size: 15px;
+  color: var(--violet-11);
+  width: 90px;
+  text-align: right;
+}
+
+.Input {
+  width: 100%;
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  padding: 0 10px;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--violet-11);
+  box-shadow: 0 0 0 1px var(--violet-7);
+  height: 35px;
+}
+.Input:focus {
+  box-shadow: 0 0 0 2px var(--violet-8);
+}
+
+@keyframes overlayShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+## 특징
+
+![checkbox icon](../../static/img/checkboxicon.png) 모달 및 비모달 모드를 지원
+
+![checkbox icon](../../static/img/checkboxicon.png) 모달 창이 열렸을 때 포커스가 자동으로 갇힘
+
+![checkbox icon](../../static/img/checkboxicon.png) 제어 또는 비제어 가능
+
+![checkbox icon](../../static/img/checkboxicon.png) Title및 Description 요소로 화면 판독기 공지사항을 관리
+
+![checkbox icon](../../static/img/checkboxicon.png) Esc는 구성 요소를 자동으로 닫음
+
+export const Highlight = ({ children, color }) => (
+  <span style={{ color: color }}>{children}</span>
+);
+
+## <Highlight color='#1C5AEC'>설치</Highlight>
+
+커맨드라인에서 컴포넌트를 설치하세요.
+
+```bash
+npm install @radix-ui/react-dialog
+```
+
+## <Highlight color='#1C5AEC'>구성</Highlight>
+
+모든 구성요소를 가져와서 조합하세요.
+
+```jsx
+import * as Dialog from "@radix-ui/react-dialog";
+
+export default () => (
+  <Dialog.Root>
+    <Dialog.Trigger />
+    <Dialog.Portal>
+      <Dialog.Overlay />
+      <Dialog.Content>
+        <Dialog.Title />
+        <Dialog.Description />
+        <Dialog.Close />
+      </Dialog.Content>
+    </Dialog.Portal>
+  </Dialog.Root>
+);
+```
+
+## <Highlight color='#1C5AEC'>API 참조</Highlight>
+
+### <Highlight color='#1C5AEC'>Root</Highlight>
+
+Dialog의 모든 부분을 포함합니다.
+
+<PropTable api={dialogAPI} category="root" />
+
+### <Highlight color='#1C5AEC'>Trigger</Highlight>
+
+Dialog를 여는 버튼입니다.
+
+<PropTable api={dialogAPI} category="trigger" />
+<DataAttributeTable api={dialogAPI} category="trigger" />
+
+### <Highlight color="#1C5AEC">Portal</Highlight>
+
+오버레이 및 콘텐츠 부분을 `body`에 포팅합니다.
+
+<PropTable api={dialogAPI} category="portal" />
+
+### <Highlight color='#1C5AEC'>Overlay</Highlight>
+
+Dialog가 열려 있을 때 뷰의 비활성 부분을 덮는 레이어입니다.
+
+<PropTable api={dialogAPI} category="overlay" />
+<DataAttributeTable api={dialogAPI} category="overlay" />
+
+### <Highlight color='#1C5AEC'>Content</Highlight>
+
+열려 있는 Dialog에서 렌더링할 내용이 들어 있습니다.
+
+<PropTable api={dialogAPI} category="content" />
+<DataAttributeTable api={dialogAPI} category="content" />
+
+### <Highlight color='#1C5AEC'>Close</Highlight>
+
+Dialog를 닫는 버튼입니다.
+
+<PropTable api={dialogAPI} category="close" />
+
+### <Highlight color='#1C5AEC'>Title</Highlight>
+
+Dialog를 열 때 알릴 접근 가능한 제목입니다.
+제목을 숨기려면 다음과 같이 `Visual Hidden` 유틸리티 안에 포장합니다 `<Visual Hidden as Child>`.
+
+<PropTable api={dialogAPI} category="title" />
+
+### <Highlight color='#1C5AEC'>Description</Highlight>
+
+대화 상자가 열리면 알림을 받을 수 있는 선택적 설명입니다.
+설명을 숨기려면 이 `<Visual Hidden as Child>`와 같이 `Visually Hidden` 유틸리티 안에 감싸도록 합니다.
+설명을 완전히 제거하려면 이 부분을 제거하고 `aria-describedby={undefined}`를 `Dialog.Content`내에 설정하십시오.
+
+<PropTable api={dialogAPI} category="description" />
+
+## <Highlight color='#1C5AEC'>예</Highlight>
+
+#### 비동기 양식 제출 후 닫기
+
+비동기 작업이 완료된 후 제어된 도구를 사용하여 Dialog를 프로그래밍 방식으로 닫습니다.
+
+```jsx
+import React from "react";
+import * as Dialog from "@radix-ui/react-dialog";
+
+const wait = () => new Promise((resolve) => setTimeout(resolve, 1000));
+
+export default () => {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <Dialog.Root open={open} onOpenChange={setOpen}>
+      <Dialog.Trigger>Open</Dialog.Trigger>
+      <Dialog.Portal>
+        <Dialog.Overlay />
+        <Dialog.Content>
+          <form
+            onSubmit={(event) => {
+              wait().then(() => setOpen(false));
+              event.preventDefault();
+            }}
+          >
+            {/** some inputs */}
+            <button type="submit">Submit</button>
+          </form>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  );
+};
+```
+
+#### 스크롤 가능 오버레이
+
+오버레이 안에서 내용을 이동하여 오버플로가 있는 대화상자를 렌더링합니다.
+
+```jsx
+// index.jsx
+import * as Dialog from "@radix-ui/react-dialog";
+import "./styles.css";
+
+export default () => {
+  return (
+    <Dialog.Root>
+      <Dialog.Trigger />
+      <Dialog.Portal>
+        <Dialog.Overlay className="DialogOverlay">
+          <Dialog.Content className="DialogContent">...</Dialog.Content>
+        </Dialog.Overlay>
+      </Dialog.Portal>
+    </Dialog.Root>
+  );
+};
+```
+
+```css
+/* styles.css */
+.DialogOverlay {
+  background: rgba(0 0 0 / 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+}
+
+.DialogContent {
+  min-width: 300px;
+  background: white;
+  padding: 30px;
+  border-radius: 4px;
+}
+```
+
+#### 사용자 지정 포털 컨테이너
+
+대화상자가 포탈로 이동하는 요소를 사용자 정의합니다.
+
+```jsx
+import React from "react";
+import * as Dialog from "@radix-ui/react-dialog";
+
+export default () => {
+  const [container, setContainer] = React.useState(null);
+  return (
+    <div>
+      <Dialog.Root>
+        <Dialog.Trigger />
+        <Dialog.Portal container={container}>
+          <Dialog.Overlay />
+          <Dialog.Content>...</Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+
+      <div ref={setContainer} />
+    </div>
+  );
+};
+```
+
+## <Highlight color='#1C5AEC'>접근성</Highlight>
+
+[`Dialog WAI-ARIA design pattern`](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/)을 준수합니다.
+
+### <Highlight color='#1C5AEC'>키보드 상호작용</Highlight>
+
+<KeyboardInteractionTable api={dialogAPI} category="keyboardInteractions" />
+
+### <Highlight color='#1C5AEC'>사용자 정의 API</Highlight>
+
+원시적인 부분을 자신의 구성요소로 추상화하여 자신만의 API를 만듭니다.
+
+#### 오버레이 및 닫기 버튼 추상화
+
+이 예제에서는 `Dialog.Overlay` 및 `Dialog.Close` 부분을 추상화합니다.
+
+#### 사용
+
+```jsx
+import { Dialog, DialogTrigger, DialogContent } from "./your-dialog";
+
+export default () => (
+  <Dialog>
+    <DialogTrigger>Dialog trigger</DialogTrigger>
+    <DialogContent>Dialog Content</DialogContent>
+  </Dialog>
+);
+```
+
+#### 구현
+
+```jsx
+// your-dialog.jsx
+import React from "react";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { Cross1Icon } from "@radix-ui/react-icons";
+
+export const DialogContent = React.forwardRef(
+  ({ children, ...props }, forwardedRef) => (
+    <DialogPrimitive.Portal>
+      <DialogPrimitive.Overlay />
+      <DialogPrimitive.Content {...props} ref={forwardedRef}>
+        {children}
+        <DialogPrimitive.Close aria-label="Close">
+          <Cross1Icon />
+        </DialogPrimitive.Close>
+      </DialogPrimitive.Content>
+    </DialogPrimitive.Portal>
+  )
+);
+
+export const Dialog = DialogPrimitive.Root;
+export const DialogTrigger = DialogPrimitive.Trigger;
+```

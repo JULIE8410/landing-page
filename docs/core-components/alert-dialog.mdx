@@ -1,0 +1,350 @@
+---
+sidebar_position: 2
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import PropTable from "../../src/components/table/PropTable.js";
+import DataAttributeTable from "../../src/components/table/DataAttributeTable.js";
+import KeyboardInteractionTable from "../../src/components/table/KeyboardInteractionTable.js";
+import alertDialogAPI from "../data/alert-dialog.ts";
+import AlertDialogDemo from "../../src/components/core-components/AlertDialogDemo.jsx";
+
+# Alert Dialog
+
+중요한 내용으로 사용자의 행동을 중단하고 응답을 기대하는 모달 대화상자입니다.
+
+<AlertDialogDemo />
+
+<Tabs>
+<TabItem value="js" label="index.js">
+
+```jsx
+import React from "react";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import "./styles.css";
+const AlertDialogDemo = () => (
+  <AlertDialog.Root>
+    <AlertDialog.Trigger asChild>
+      <button className="Button violet">Delete account</button>
+    </AlertDialog.Trigger>
+    <AlertDialog.Portal>
+      <AlertDialog.Overlay className="AlertDialogOverlay" />
+      <AlertDialog.Content className="AlertDialogContent">
+        <AlertDialog.Title className="AlertDialogTitle">
+          Are you absolutely sure?
+        </AlertDialog.Title>
+        <AlertDialog.Description className="AlertDialogDescription">
+          This action cannot be undone. This will permanently delete your
+          account and remove your data from our servers.
+        </AlertDialog.Description>
+        <div style={{ display: "flex", gap: 25, justifyContent: "flex-end" }}>
+          <AlertDialog.Cancel asChild>
+            <button className="Button mauve">Cancel</button>
+          </AlertDialog.Cancel>
+          <AlertDialog.Action asChild>
+            <button className="Button red">Yes, delete account</button>
+          </AlertDialog.Action>
+        </div>
+      </AlertDialog.Content>
+    </AlertDialog.Portal>
+  </AlertDialog.Root>
+);
+export default AlertDialogDemo;
+```
+
+</TabItem>
+<TabItem value="css" label="styles.css">
+
+```css
+@import "@radix-ui/colors/black-alpha.css";
+@import "@radix-ui/colors/mauve.css";
+@import "@radix-ui/colors/red.css";
+@import "@radix-ui/colors/violet.css";
+/* reset */
+button {
+  all: unset;
+}
+.AlertDialogOverlay {
+  background-color: var(--black-a9);
+  position: fixed;
+  inset: 0;
+  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.AlertDialogContent {
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px
+      10px 20px -15px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 500px;
+  max-height: 85vh;
+  padding: 25px;
+  animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.AlertDialogContent:focus {
+  outline: none;
+}
+.AlertDialogTitle {
+  margin: 0;
+  color: var(--mauve-12);
+  font-size: 17px;
+  font-weight: 500;
+}
+.AlertDialogDescription {
+  margin-bottom: 20px;
+  color: var(--mauve-11);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.Button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  padding: 0 15px;
+  font-size: 15px;
+  line-height: 1;
+  font-weight: 500;
+  height: 35px;
+}
+.Button.violet {
+  background-color: white;
+  color: var(--violet-11);
+  box-shadow: 0 2px 10px var(--black-a7);
+}
+.Button.violet:hover {
+  background-color: var(--mauve-3);
+}
+.Button.violet:focus {
+  box-shadow: 0 0 0 2px black;
+}
+.Button.red {
+  background-color: var(--red-4);
+  color: var(--red-11);
+}
+.Button.red:hover {
+  background-color: var(--red-5);
+}
+.Button.red:focus {
+  box-shadow: 0 0 0 2px var(--red-7);
+}
+.Button.mauve {
+  background-color: var(--mauve-4);
+  color: var(--mauve-11);
+}
+.Button.mauve:hover {
+  background-color: var(--mauve-5);
+}
+.Button.mauve:focus {
+  box-shadow: 0 0 0 2px var(--mauve-7);
+}
+@keyframes overlayShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+## 특징
+
+![checkbox icon](../../static/img/checkboxicon.png) 포커스가 자동으로 갇힘
+
+![checkbox icon](../../static/img/checkboxicon.png) 제어 또는 비제어 가능
+
+![checkbox icon](../../static/img/checkboxicon.png) 제목 및 설명 구성요소로 화면 판독기 공지사항을 관리
+
+![checkbox icon](../../static/img/checkboxicon.png) Esc는 구성 요소를 자동으로 닫음
+
+export const Highlight = ({ children, color }) => (
+  <span style={{ color: color }}>{children}</span>
+);
+
+## <Highlight color='#1C5AEC'>설치</Highlight>
+
+커맨드라인에서 컴포넌트를 설치하세요.
+
+```bash
+npm install @radix-ui/react-alert-dialog
+```
+
+## <Highlight color='#1C5AEC'>구성</Highlight>
+
+모든 구성요소를 가져와서 조합하세요.
+
+```jsx
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
+export default () => (
+  <AlertDialog.Root>
+    <AlertDialog.Trigger />
+    <AlertDialog.Portal>
+      <AlertDialog.Overlay />
+      <AlertDialog.Content>
+        <AlertDialog.Title />
+        <AlertDialog.Description />
+        <AlertDialog.Cancel />
+        <AlertDialog.Action />
+      </AlertDialog.Content>
+    </AlertDialog.Portal>
+  </AlertDialog.Root>
+);
+```
+
+## <Highlight color='#1C5AEC'>API 참조</Highlight>
+
+### <Highlight color='#1C5AEC'>Root</Highlight>
+
+Alert Dialog의 모든 부분을 포함합니다.
+
+<PropTable api={alertDialogAPI} category="root" />
+
+### <Highlight color='#1C5AEC'>Trigger</Highlight>
+
+대화상자를 여는 버튼입니다.
+
+<PropTable api={alertDialogAPI} category="trigger" />
+
+<DataAttributeTable api={alertDialogAPI} category="trigger" />
+
+### <Highlight color='#1C5AEC'>Portal</Highlight>
+
+오버레이 및 콘텐츠 부분을 `body`에 포팅합니다.
+
+<PropTable api={alertDialogAPI} category="portal" />
+
+### <Highlight color='#1C5AEC'>Overlay</Highlight>
+
+대화상자가 열려 있을 때 뷰의 비활성 부분을 덮는 레이어입니다.
+
+<PropTable api={alertDialogAPI} category="overlay" />
+
+<DataAttributeTable api={alertDialogAPI} category="overlay" />
+
+### <Highlight color='#1C5AEC'>Content</Highlight>
+
+열려 있는 대화상자에서 렌더링할 내용이 들어 있습니다.
+
+<PropTable api={alertDialogAPI} category="content" />
+
+<DataAttributeTable api={alertDialogAPI} category="content" />
+
+### <Highlight color='#1C5AEC'>Cancel</Highlight>
+
+대화 상자를 닫는 버튼입니다.
+이 버튼은 `AlertDialog.Action` 버튼과 시각적으로 구별되어야 합니다.
+
+<PropTable api={alertDialogAPI} category="cancel" />
+
+### <Highlight color='#1C5AEC'>Action</Highlight>
+
+대화 상자를 닫는 버튼입니다.
+이러한 버튼은 `AlertDialog.Cancel` 버튼과 시각적으로 구별되어야 합니다.
+
+<PropTable api={alertDialogAPI} category="action" />
+
+### <Highlight color='#1C5AEC'>Title</Highlight>
+
+대화 상자를 열 때 알릴 접근 가능한 이름입니다.
+`AlertDialog.Content`에 `aria-label` 또는 `aria-labelledby`을 지정하고
+이 구성 요소를 제외할 수 있습니다.
+
+<PropTable api={alertDialogAPI} category="title" />
+
+### <Highlight color='#1C5AEC'>Description</Highlight>
+
+대화 상자를 열 때 알릴 접근 가능한 설명입니다.
+`AlertDialog.Content`에 `aria-describedby`를 제공하고
+이 구성 요소를 제외할 수도 있습니다.
+
+<PropTable api={alertDialogAPI} category="description" />
+
+## <Highlight color='#1C5AEC'>예</Highlight>
+
+#### 비동기 양식 제출 후 닫기
+
+제어된 props를 사용하여 비동기 작업이 완료된 후 Alert Dialog를 프로그래밍 방식으로 닫습니다.
+
+```jsx
+import React from "react";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
+
+const wait = () => new Promise((resolve) => setTimeout(resolve, 1000));
+
+export default () => {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <AlertDialog.Root open={open} onOpenChange={setOpen}>
+      <AlertDialog.Trigger>Open</AlertDialog.Trigger>
+      <AlertDialog.Portal>
+        <AlertDialog.Overlay />
+        <AlertDialog.Content>
+          <form
+            onSubmit={(event) => {
+              wait().then(() => setOpen(false));
+              event.preventDefault();
+            }}
+          >
+            {/** some inputs */}
+            <button type="submit">Submit</button>
+          </form>
+        </AlertDialog.Content>
+      </AlertDialog.Portal>
+    </AlertDialog.Root>
+  );
+};
+```
+
+#### 사용자 portal container
+
+Alert Dialog 상자가 포털로 이동하는 요소를 사용자 지정합니다.
+
+```jsx
+export default () => {
+  const [container, setContainer] = React.useState(null);
+  return (
+    <div>
+      <AlertDialog.Root>
+        <AlertDialog.Trigger />
+        <AlertDialog.Portal container={container}>
+          <AlertDialog.Overlay />
+          <AlertDialog.Content>...</AlertDialog.Content>
+        </AlertDialog.Portal>
+      </AlertDialog.Root>
+
+      <div ref={setContainer} />
+    </div>
+  );
+};
+```
+
+## <Highlight color='#1C5AEC'>접근성</Highlight>
+
+[`Alert and Message Dialogs WAI-ARIA design pattern`](https://www.w3.org/WAI/ARIA/apg/patterns/alertdialog)을 준수합니다.
+
+### <Highlight color='#1C5AEC'>키보드 상호작용</Highlight>
+
+<KeyboardInteractionTable
+  api={alertDialogAPI}
+  category="keyboardInteractions"
+/>

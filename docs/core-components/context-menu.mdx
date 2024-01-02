@@ -1,0 +1,775 @@
+---
+sidebar_position: 7
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import PropTable from "../../src/components/table/PropTable.js";
+import DataAttributeTable from "../../src/components/table/DataAttributeTable.js";
+import CssVariableTable from "../../src/components/table/CssVariableTable.js";
+import KeyboardInteractionTable from "../../src/components/table/KeyboardInteractionTable.js";
+import contextMenuAPI from "../data/context-menu.ts";
+import ContextMenuDemo from "../../src/components/core-components/ContextMenuDemo.jsx";
+
+# Context Menu
+
+마우스 오른쪽 버튼을 클릭하거나 길게 누르면 트리거되는 포인터 위치의 메뉴를 표시합니다.
+
+<ContextMenuDemo />
+
+<Tabs>
+<TabItem value="js" label="index.js">
+
+```jsx
+import React from "react";
+import * as ContextMenu from "@radix-ui/react-context-menu";
+import {
+  DotFilledIcon,
+  CheckIcon,
+  ChevronRightIcon,
+} from "@radix-ui/react-icons";
+import "./styles.css";
+const ContextMenuDemo = () => {
+  const [bookmarksChecked, setBookmarksChecked] = React.useState(true);
+  const [urlsChecked, setUrlsChecked] = React.useState(false);
+  const [person, setPerson] = React.useState("pedro");
+  return (
+    <ContextMenu.Root>
+      <ContextMenu.Trigger className="ContextMenuTrigger">
+        Right click here.
+      </ContextMenu.Trigger>
+      <ContextMenu.Portal>
+        <ContextMenu.Content
+          className="ContextMenuContent"
+          sideOffset={5}
+          align="end"
+        >
+          <ContextMenu.Item className="ContextMenuItem">
+            Back <div className="RightSlot">⌘+[</div>
+          </ContextMenu.Item>
+          <ContextMenu.Item className="ContextMenuItem" disabled>
+            Foward <div className="RightSlot">⌘+]</div>
+          </ContextMenu.Item>
+          <ContextMenu.Item className="ContextMenuItem">
+            Reload <div className="RightSlot">⌘+R</div>
+          </ContextMenu.Item>
+          <ContextMenu.Sub>
+            <ContextMenu.SubTrigger className="ContextMenuSubTrigger">
+              More Tools
+              <div className="RightSlot">
+                <ChevronRightIcon />
+              </div>
+            </ContextMenu.SubTrigger>
+            <ContextMenu.Portal>
+              <ContextMenu.SubContent
+                className="ContextMenuSubContent"
+                sideOffset={2}
+                alignOffset={-5}
+              >
+                <ContextMenu.Item className="ContextMenuItem">
+                  Save Page As… <div className="RightSlot">⌘+S</div>
+                </ContextMenu.Item>
+                <ContextMenu.Item className="ContextMenuItem">
+                  Create Shortcut…
+                </ContextMenu.Item>
+                <ContextMenu.Item className="ContextMenuItem">
+                  Name Window…
+                </ContextMenu.Item>
+                <ContextMenu.Separator className="ContextMenuSeparator" />
+                <ContextMenu.Item className="ContextMenuItem">
+                  Developer Tools
+                </ContextMenu.Item>
+              </ContextMenu.SubContent>
+            </ContextMenu.Portal>
+          </ContextMenu.Sub>
+          <ContextMenu.Separator className="ContextMenuSeparator" />
+          <ContextMenu.CheckboxItem
+            className="ContextMenuCheckboxItem"
+            checked={bookmarksChecked}
+            onCheckedChange={setBookmarksChecked}
+          >
+            <ContextMenu.ItemIndicator className="ContextMenuItemIndicator">
+              <CheckIcon />
+            </ContextMenu.ItemIndicator>
+            Show Bookmarks <div className="RightSlot">⌘+B</div>
+          </ContextMenu.CheckboxItem>
+          <ContextMenu.CheckboxItem
+            className="ContextMenuCheckboxItem"
+            checked={urlsChecked}
+            onCheckedChange={setUrlsChecked}
+          >
+            <ContextMenu.ItemIndicator className="ContextMenuItemIndicator">
+              <CheckIcon />
+            </ContextMenu.ItemIndicator>
+            Show Full URLs
+          </ContextMenu.CheckboxItem>
+          <ContextMenu.Separator className="ContextMenuSeparator" />
+          <ContextMenu.Label className="ContextMenuLabel">
+            People
+          </ContextMenu.Label>
+          <ContextMenu.RadioGroup value={person} onValueChange={setPerson}>
+            <ContextMenu.RadioItem
+              className="ContextMenuRadioItem"
+              value="pedro"
+            >
+              <ContextMenu.ItemIndicator className="ContextMenuItemIndicator">
+                <DotFilledIcon />
+              </ContextMenu.ItemIndicator>
+              Pedro Duarte
+            </ContextMenu.RadioItem>
+            <ContextMenu.RadioItem
+              className="ContextMenuRadioItem"
+              value="colm"
+            >
+              <ContextMenu.ItemIndicator className="ContextMenuItemIndicator">
+                <DotFilledIcon />
+              </ContextMenu.ItemIndicator>
+              Colm Tuite
+            </ContextMenu.RadioItem>
+          </ContextMenu.RadioGroup>
+        </ContextMenu.Content>
+      </ContextMenu.Portal>
+    </ContextMenu.Root>
+  );
+};
+export default ContextMenuDemo;
+```
+
+</TabItem>
+<TabItem value="css" label="styles.css">
+
+```css
+@import "@radix-ui/colors/black-alpha.css";
+@import "@radix-ui/colors/mauve.css";
+@import "@radix-ui/colors/violet.css";
+.ContextMenuTrigger {
+  display: block;
+  border: 2px white dashed;
+  color: white;
+  border-radius: 4px;
+  font-size: 15px;
+  user-select: none;
+  padding: 45px 0;
+  width: 300px;
+  text-align: center;
+}
+.ContextMenuContent,
+.ContextMenuSubContent {
+  min-width: 220px;
+  background-color: white;
+  border-radius: 6px;
+  overflow: hidden;
+  padding: 5px;
+  box-shadow: 0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px
+      rgba(22, 23, 24, 0.2);
+}
+.ContextMenuItem,
+.ContextMenuCheckboxItem,
+.ContextMenuRadioItem,
+.ContextMenuSubTrigger {
+  font-size: 13px;
+  line-height: 1;
+  color: var(--violet-11);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  height: 25px;
+  padding: 0 5px;
+  position: relative;
+  padding-left: 25px;
+  user-select: none;
+  outline: none;
+}
+.ContextMenuSubTrigger[data-state="open"] {
+  background-color: var(--violet-4);
+  color: var(--violet-11);
+}
+.ContextMenuItem[data-disabled],
+.ContextMenuCheckboxItem[data-disabled],
+.ContextMenuRadioItem[data-disabled],
+.ContextMenuSubTrigger[data-disabled] {
+  color: var(--mauve-8);
+  pointer-events: "none";
+}
+.ContextMenuItem[data-highlighted],
+.ContextMenuCheckboxItem[data-highlighted],
+.ContextMenuRadioItem[data-highlighted],
+.ContextMenuSubTrigger[data-highlighted] {
+  background-color: var(--violet-9);
+  color: var(--violet-1);
+}
+.ContextMenuLabel {
+  padding-left: 25px;
+  font-size: 12px;
+  line-height: 25px;
+  color: var(--mauve-11);
+}
+.ContextMenuSeparator {
+  height: 1px;
+  background-color: var(--violet-6);
+  margin: 5px;
+}
+.ContextMenuItemIndicator {
+  position: absolute;
+  left: 0;
+  width: 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.RightSlot {
+  margin-left: auto;
+  padding-left: 20px;
+  color: var(--mauve-11);
+}
+[data-highlighted] > .RightSlot {
+  color: white;
+}
+[data-disabled] .RightSlot {
+  color: var(--mauve-8);
+}
+```
+
+</TabItem>
+</Tabs>
+
+## 특징
+
+![checkbox icon](../../static/img/checkboxicon.png) 구성가능한 판독 방향으로 하위 메뉴를 지원
+
+![checkbox icon](../../static/img/checkboxicon.png) Item, Label, Item 그룹 지원
+
+![checkbox icon](../../static/img/checkboxicon.png) 확인 가능한 항목(단일 또는 다중)을 선택적으로 불확정 상태로 지원
+
+![checkbox icon](../../static/img/checkboxicon.png) 모달 및 비모달 모드를 지원
+
+![checkbox icon](../../static/img/checkboxicon.png) 측면, 정렬, 오프셋, 충돌 처리를 사용자 정의
+
+![checkbox icon](../../static/img/checkboxicon.png) 포커스의 완벽한 관리
+
+![checkbox icon](../../static/img/checkboxicon.png) 완전한 키보드 탐색
+
+![checkbox icon](../../static/img/checkboxicon.png) 자동 지원을 입력
+
+![checkbox icon](../../static/img/checkboxicon.png) 무시 및 계층화 동작 사용자 지정 가능
+
+![checkbox icon](../../static/img/checkboxicon.png) 터치 장치를 길게 눌러 트리거링
+
+export const Highlight = ({ children, color }) => (
+  <span style={{ color: color }}>{children}</span>
+);
+
+## <Highlight color='#1C5AEC'>설치</Highlight>
+
+커맨드라인에서 컴포넌트를 설치하세요.
+
+```bash
+npm install @radix-ui/react-context-menu
+```
+
+## <Highlight color='#1C5AEC'>구성</Highlight>
+
+모든 구성요소를 가져와서 조합하세요.
+
+```jsx
+import * as ContextMenu from "@radix-ui/react-context-menu";
+export default () => (
+  <ContextMenu.Root>
+    <ContextMenu.Trigger />
+    <ContextMenu.Portal>
+      <ContextMenu.Content>
+        <ContextMenu.Label />
+        <ContextMenu.Item />
+        <ContextMenu.Group>
+          <ContextMenu.Item />
+        </ContextMenu.Group>
+        <ContextMenu.CheckboxItem>
+          <ContextMenu.ItemIndicator />
+        </ContextMenu.CheckboxItem>
+        <ContextMenu.RadioGroup>
+          <ContextMenu.RadioItem>
+            <ContextMenu.ItemIndicator />
+          </ContextMenu.RadioItem>
+        </ContextMenu.RadioGroup>
+        <ContextMenu.Sub>
+          <ContextMenu.SubTrigger />
+          <ContextMenu.Portal>
+            <ContextMenu.SubContent />
+          </ContextMenu.Portal>
+        </ContextMenu.Sub>
+        <ContextMenu.Separator />
+      </ContextMenu.Content>
+    </ContextMenu.Portal>
+  </ContextMenu.Root>
+);
+```
+
+## <Highlight color='#1C5AEC'>API 참조</Highlight>
+
+[`Menu WAI-ARIA design pattern`](https://www.w3.org/WAI/ARIA/apg/patterns/menu)을 준수하며,
+[`roving tabindex`](https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/examples/menu-button-actions/)를 사용하여 메뉴 항목 간 포커스 이동을 관리합니다.
+
+### <Highlight color='#1C5AEC'>Root</Highlight>
+
+Context Menu의 모든 부분을 포함합니다.
+
+<PropTable api={contextMenuAPI} category="root" />
+
+### <Highlight color='#1C5AEC'>Trigger</Highlight>
+
+Context Menu를 여는 영역입니다. 마우스 오른쪽 버튼을 클릭할 때(또는 관련 키보드 단축키 사용)
+컨텍스트 메뉴를 열 대상 주위로 이동합니다.
+
+<PropTable api={contextMenuAPI} category="trigger" />
+
+<DataAttributeTable api={contextMenuAPI} category="trigger" />
+
+### <Highlight color='#1C5AEC'>Portal</Highlight>
+
+콘텐츠 부분을 본문에 포탈 시에 사용합니다.
+
+<PropTable api={contextMenuAPI} category="portal" />
+
+### <Highlight color='#1C5AEC'>Content</Highlight>
+
+Open context menu를 나타내는 구성 요소 입니다.
+
+<PropTable api={contextMenuAPI} category="content" />
+
+<DataAttributeTable api={contextMenuAPI} category="content" />
+
+<CssVariableTable api={contextMenuAPI} category="content" />
+
+### <Highlight color='#1C5AEC'>Arrow</Highlight>
+
+하위 메뉴와 함께 렌더링할 선택적 화살표 요소입니다.
+이를 사용하여 트리거 항목을 `ContextMenu.Content`와 시각적으로 연결할 수 있습니다.
+`ContextMenu.Content` 안에서 렌더링해야 합니다.
+
+<PropTable api={contextMenuAPI} category="arrow" />
+
+### <Highlight color='#1C5AEC'>Item</Highlight>
+
+Context menu 항목을 포함하는 구성 요소입니다 .
+
+<PropTable api={contextMenuAPI} category="item" />
+
+<DataAttributeTable api={contextMenuAPI} category="item" />
+
+### <Highlight color='#1C5AEC'>Group</Highlight>
+
+`ContextMenu.Item`들을 그룹화하는 데 사용됩니다.
+
+<PropTable api={contextMenuAPI} category="group" />
+
+### <Highlight color='#1C5AEC'>Label</Highlight>
+
+Label을 렌더링하는 데 사용됩니다l. 화살표 키를 사용하여 초점을 맞출 수 없습니다.
+
+<PropTable api={contextMenuAPI} category="label" />
+
+### <Highlight color='#1C5AEC'>CheckboxItem</Highlight>
+
+Checkbox처럼 제어하고 렌더링할 수 있는 아이템입니다.
+
+<PropTable api={contextMenuAPI} category="checkboxitem" />
+
+<DataAttributeTable api={contextMenuAPI} category="checkboxitem" />
+
+### <Highlight color='#1C5AEC'>RadioGroup</Highlight>
+
+여러 `ContextMenu.RadioItem` 들을 그룹화하는 데 사용됩니다.
+
+<PropTable api={contextMenuAPI} category="radiogroup" />
+
+### <Highlight color='#1C5AEC'>RadioItem</Highlight>
+
+Radio처럼 제어하고 렌더링할 수 있는 아이템입니다.
+
+<PropTable api={contextMenuAPI} category="radioitem" />
+
+<DataAttributeTable api={contextMenuAPI} category="radioitem" />
+
+### <Highlight color='#1C5AEC'>ItemIndicator</Highlight>
+
+상위 `ContextMenu.CheckboxItem` 또는 `ContextMenu.RadioItem`이 선택되어 있을 때 렌더링합니다.
+이 요소를 직접 스타일링하거나 아이콘을 넣을 래퍼로 사용하거나 둘 다 사용할 수 있습니다.
+
+<PropTable api={contextMenuAPI} category="itemindicator" />
+
+<DataAttributeTable api={contextMenuAPI} category="itemindicator" />
+
+### <Highlight color='#1C5AEC'>Separator</Highlight>
+
+Context menu에서 item을 시각적으로 구분하는 데 사용됩니다.
+
+<PropTable api={contextMenuAPI} category="separator" />
+
+### <Highlight color='#1C5AEC'>Sub</Highlight>
+
+하위 메뉴의 모든 부분을 포함합니다.
+
+<PropTable api={contextMenuAPI} category="sub" />
+
+### <Highlight color='#1C5AEC'>SubTrigger</Highlight>
+
+Submenu를 여는 항목입니다. `ContextMenu.Sub`에서 렌더링해야 합니다.
+
+<PropTable api={contextMenuAPI} category="subtrigger" />
+
+<DataAttributeTable api={contextMenuAPI} category="subtrigger" />
+
+### <Highlight color='#1C5AEC'>SubContent</Highlight>
+
+Submenu가 열렸을 때 나타나는 구성 요소입니다. `ContextMenu.Sub`에서 렌더링해야 합니다.
+
+<PropTable api={contextMenuAPI} category="subcontent" />
+
+<DataAttributeTable api={contextMenuAPI} category="subcontent" />
+
+<CssVariableTable api={contextMenuAPI} category="subcontent" />
+
+## <Highlight color='#1C5AEC'>예</Highlight>
+
+#### Submenu 포함
+
+`ContextMenu.Sub`를 해당 부분과 함께 사용하여 하위 메뉴를 만들 수 있습니다.
+
+```jsx
+<ContextMenu.Root>
+  <ContextMenu.Trigger>…</ContextMenu.Trigger>
+  <ContextMenu.Portal>
+    <ContextMenu.Content>
+      <ContextMenu.Item>…</ContextMenu.Item>
+      <ContextMenu.Item>…</ContextMenu.Item>
+      <ContextMenu.Separator />
+      <ContextMenu.Sub>
+        <ContextMenu.SubTrigger>Sub menu →</ContextMenu.SubTrigger>
+        <ContextMenu.Portal>
+          <ContextMenu.SubContent>
+            <ContextMenu.Item>Sub menu item</ContextMenu.Item>
+            <ContextMenu.Item>Sub menu item</ContextMenu.Item>
+            <ContextMenu.Arrow />
+          </ContextMenu.SubContent>
+        </ContextMenu.Portal>
+      </ContextMenu.Sub>
+      <ContextMenu.Separator />
+      <ContextMenu.Item>…</ContextMenu.Item>
+    </ContextMenu.Content>
+  </ContextMenu.Portal>
+</ContextMenu.Root>
+```
+
+#### 비활성화된 항목 포함
+
+`data-disabled` 속성을 통해 비활성화된 항목에 특수 스타일을 추가할 수 있습니다.
+
+```jsx
+// index.jsx
+import * as ContextMenu from "@radix-ui/react-context-menu";
+import "./styles.css";
+
+export default () => (
+  <ContextMenu.Root>
+    <ContextMenu.Trigger>…</ContextMenu.Trigger>
+    <ContextMenu.Portal>
+      <ContextMenu.Content>
+        <ContextMenu.Item className="ContextMenuItem" disabled>
+          …
+        </ContextMenu.Item>
+        <ContextMenu.Item className="ContextMenuItem">…</ContextMenu.Item>
+      </ContextMenu.Content>
+    </ContextMenu.Portal>
+  </ContextMenu.Root>
+);
+```
+
+```jsx
+/* styles.css */
+.ContextMenuItem[data-disabled] {
+  color: gainsboro;
+}
+```
+
+#### separator 포함
+
+항목 사이에 구분자를 추가하려면 구분자 부분을 사용합니다.
+
+```jsx
+<ContextMenu.Root>
+  <ContextMenu.Trigger>…</ContextMenu.Trigger>
+  <ContextMenu.Portal>
+    <ContextMenu.Content>
+      <ContextMenu.Item>…</ContextMenu.Item>
+      <ContextMenu.Separator />
+      <ContextMenu.Item>…</ContextMenu.Item>
+      <ContextMenu.Separator />
+      <ContextMenu.Item>…</ContextMenu.Item>
+    </ContextMenu.Content>
+  </ContextMenu.Portal>
+</ContextMenu.Root>
+```
+
+#### label 포함
+
+Label 부분을 사용하여 단면에 레이블을 지정할 수 있습니다.
+
+```jsx
+<ContextMenu.Root>
+  <ContextMenu.Trigger>…</ContextMenu.Trigger>
+  <ContextMenu.Portal>
+    <ContextMenu.Content>
+      <ContextMenu.Label>Label</ContextMenu.Label>
+      <ContextMenu.Item>…</ContextMenu.Item>
+      <ContextMenu.Item>…</ContextMenu.Item>
+      <ContextMenu.Item>…</ContextMenu.Item>
+    </ContextMenu.Content>
+  </ContextMenu.Portal>
+</ContextMenu.Root>
+```
+
+#### checkbox item 포함
+
+CheckboxItem 부분을 사용하여 체크할 수 있는 항목을 추가합니다.
+
+```jsx
+import React from "react";
+import { CheckIcon } from "@radix-ui/react-icons";
+import * as ContextMenu from "@radix-ui/react-context-menu";
+
+export default () => {
+  const [checked, setChecked] = React.useState(true);
+
+  return (
+    <ContextMenu.Root>
+      <ContextMenu.Trigger>…</ContextMenu.Trigger>
+      <ContextMenu.Portal>
+        <ContextMenu.Content>
+          <ContextMenu.Item>…</ContextMenu.Item>
+          <ContextMenu.Item>…</ContextMenu.Item>
+          <ContextMenu.Separator />
+          <ContextMenu.CheckboxItem
+            checked={checked}
+            onCheckedChange={setChecked}
+          >
+            <ContextMenu.ItemIndicator>
+              <CheckIcon />
+            </ContextMenu.ItemIndicator>
+            Checkbox item
+          </ContextMenu.CheckboxItem>
+        </ContextMenu.Content>
+      </ContextMenu.Portal>
+    </ContextMenu.Root>
+  );
+};
+```
+
+#### radio item 포함
+
+`RadioGroup` 및 `RadioItem`을 사용하여 다른 항목에서 확인할 수 있는 항목을 추가합니다.
+
+```jsx
+import React from "react";
+import { CheckIcon } from "@radix-ui/react-icons";
+import * as ContextMenu from "@radix-ui/react-context-menu";
+
+export default () => {
+  const [color, setColor] = React.useState("blue");
+
+  return (
+    <ContextMenu.Root>
+      <ContextMenu.Trigger>…</ContextMenu.Trigger>
+      <ContextMenu.Portal>
+        <ContextMenu.Content>
+          <ContextMenu.RadioGroup value={color} onValueChange={setColor}>
+            <ContextMenu.RadioItem value="red">
+              <ContextMenu.ItemIndicator>
+                <CheckIcon />
+              </ContextMenu.ItemIndicator>
+              Red
+            </ContextMenu.RadioItem>
+            <ContextMenu.RadioItem value="blue">
+              <ContextMenu.ItemIndicator>
+                <CheckIcon />
+              </ContextMenu.ItemIndicator>
+              Blue
+            </ContextMenu.RadioItem>
+            <ContextMenu.RadioItem value="green">
+              <ContextMenu.ItemIndicator>
+                <CheckIcon />
+              </ContextMenu.ItemIndicator>
+              Green
+            </ContextMenu.RadioItem>
+          </ContextMenu.RadioGroup>
+        </ContextMenu.Content>
+      </ContextMenu.Portal>
+    </ContextMenu.Root>
+  );
+};
+```
+
+#### 복잡한 항목 포함
+
+Image와 같은 추가 장식 요소를 Item 부분에 추가할 수 있습니다.
+
+```jsx
+import * as ContextMenu from "@radix-ui/react-context-menu";
+
+export default () => (
+  <ContextMenu.Root>
+    <ContextMenu.Trigger>…</ContextMenu.Trigger>
+    <ContextMenu.Portal>
+      <ContextMenu.Content>
+        <ContextMenu.Item>
+          <img src="…" />
+          Adolfo Hess
+        </ContextMenu.Item>
+        <ContextMenu.Item>
+          <img src="…" />
+          Miyah Myles
+        </ContextMenu.Item>
+      </ContextMenu.Content>
+    </ContextMenu.Portal>
+  </ContextMenu.Root>
+);
+```
+
+#### 내용/하위 내용 사이즈 제한
+
+Content (또는 sub-content)의 너비가 Trigger (또는 sub-trigger)의 너비와 일치하도록 제한할 수 있습니다.
+Viewport를 초과하지 않도록 높이를 제한할 수도 있습니다.
+이를 지원하기 위해 `--radix-context-menu-trigger-width` 및 `--radix-context-menu-content-available-height`와 같은 여러 CSS 사용자 지정 속성을 노출합니다. 이를 사용하여 콘텐츠 차원을 제한합니다.
+
+```jsx
+// index.jsx
+import * as ContextMenu from "@radix-ui/react-context-menu";
+import "./styles.css";
+
+export default () => (
+  <ContextMenu.Root>
+    <ContextMenu.Trigger>…</ContextMenu.Trigger>
+    <ContextMenu.Portal>
+      <ContextMenu.Content className="ContextMenuContent">
+        …
+      </ContextMenu.Content>
+    </ContextMenu.Portal>
+  </ContextMenu.Root>
+);
+```
+
+```css
+/* styles.css */
+.ContextMenuContent {
+  width: var(--radix-context-menu-trigger-width);
+  max-height: var(--radix-context-menu-content-available-height);
+}
+```
+
+#### 원본 인식 애니메이션
+
+CSS 사용자 지정 속성 `--radix-context-menu-content-transform-origin`을 노출합니다.
+이를 사용하여 `side`, `sideOffset`, `align`, `alignOffset` 및 충돌에 따라 계산된 원본에서 컨텐츠를 애니메이션화합니다.
+
+```jsx
+// index.jsx
+import * as ContextMenu from "@radix-ui/react-context-menu";
+import "./styles.css";
+
+export default () => (
+  <ContextMenu.Root>
+    <ContextMenu.Trigger>…</ContextMenu.Trigger>
+    <ContextMenu.Portal>
+      <ContextMenu.Content className="ContextMenuContent">
+        …
+      </ContextMenu.Content>
+    </ContextMenu.Portal>
+  </ContextMenu.Root>
+);
+```
+
+```css
+/* styles.css */
+.ContextMenuContent {
+  transform-origin: var(--radix-context-menu-content-transform-origin);
+  animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+```
+
+#### 충돌 인식 애니메이션
+
+`data-side`와 `data-align` 속성을 사용합니다. 이 값은 충돌을 반영하기 위해 런타임에 변경외며, 충돌 및 방향 인식 애니메이션을 만들 때 사용합니다.
+
+```jsx
+// index.jsx
+import * as ContextMenu from "@radix-ui/react-context-menu";
+import "./styles.css";
+
+export default () => (
+  <ContextMenu.Root>
+    <ContextMenu.Trigger>…</ContextMenu.Trigger>
+    <ContextMenu.Portal>
+      <ContextMenu.Content className="ContextMenuContent">
+        …
+      </ContextMenu.Content>
+    </ContextMenu.Portal>
+  </ContextMenu.Root>
+);
+```
+
+```css
+/* styles.css */
+.ContextMenuContent {
+  animation-duration: 0.6s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ContextMenuContent[data-side="top"] {
+  animation-name: slideUp;
+}
+.ContextMenuContent[data-side="bottom"] {
+  animation-name: slideDown;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+```
+
+## <Highlight color='#1C5AEC'>접근성</Highlight>
+
+메뉴 항목 간 포커스 이동을 관리하기 위해 [`roving tabindex`](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_roving_tabindex)를 사용합니다.
+
+### <Highlight color='#1C5AEC'>키보드 상호작용</Highlight>
+
+<KeyboardInteractionTable
+  api={contextMenuAPI}
+  category="keyboardInteractions"
+/>

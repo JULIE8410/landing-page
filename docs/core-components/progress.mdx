@@ -1,0 +1,125 @@
+---
+sidebar_position: 16
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import PropTable from "../../src/components/table/PropTable.js";
+import DataAttributeTable from "../../src/components/table/DataAttributeTable.js";
+import progressAPI from "../data/progress.ts";
+import ProgressDemo from "../../src/components/core-components/ProgressDemo.jsx";
+
+# Progress
+
+일반적으로 진행률 표시줄로 표시되는 작업의 완료 진행률을 나타내는 지시자를 표시합니다.
+
+<ProgressDemo />
+
+<Tabs>
+<TabItem value="js" label="index.js">
+
+```jsx
+import React from "react";
+import * as Progress from "@radix-ui/react-progress";
+import "./styles.css";
+
+const ProgressDemo = () => {
+  const [progress, setProgress] = React.useState(13);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => setProgress(66), 500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <Progress.Root className="ProgressRoot" value={progress}>
+      <Progress.Indicator
+        className="ProgressIndicator"
+        style={{ transform: `translateX(-${100 - progress}%)` }}
+      />
+    </Progress.Root>
+  );
+};
+
+export default ProgressDemo;
+```
+
+</TabItem>
+<TabItem value="css" label="styles.css">
+
+```css
+@import "@radix-ui/colors/black-alpha.css";
+
+.ProgressRoot {
+  position: relative;
+  overflow: hidden;
+  background: var(--black-a9);
+  border-radius: 99999px;
+  width: 300px;
+  height: 25px;
+
+  /* Fix overflow clipping in Safari */
+  /* https://gist.github.com/domske/b66047671c780a238b51c51ffde8d3a0 */
+  transform: translateZ(0);
+}
+
+.ProgressIndicator {
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  transition: transform 660ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+```
+
+</TabItem>
+</Tabs>
+
+## 특징
+
+![checkbox icon](../../static/img/checkboxicon.png) 보조 기술이 작업의 진행 상황을 읽을 수 있는 컨텍스트를 제공
+
+export const Highlight = ({ children, color }) => (
+  <span style={{ color: color }}>{children}</span>
+);
+
+## <Highlight color='#1C5AEC'>설치</Highlight>
+
+커맨드라인에서 컴포넌트를 설치하세요.
+
+```bash
+npm install @radix-ui/react-progress
+```
+
+## <Highlight color='#1C5AEC'>구성</Highlight>
+
+모든 구성요소를 가져와서 조합하세요.
+
+```jsx
+import * as Progress from "@radix-ui/react-progress";
+
+export default () => (
+  <Progress.Root>
+    <Progress.Indicator />
+  </Progress.Root>
+);
+```
+
+## <Highlight color='#1C5AEC'>접근성</Highlight>
+
+[`Progressbar role requirements`](https://www.w3.org/WAI/ARIA/apg/patterns/meter/)를 준수합니다.
+
+## <Highlight color='#1C5AEC'>API 참조</Highlight>
+
+### <Highlight color='#1C5AEC'>Root</Highlight>
+
+Progress의 모든 부분을 포함합니다.
+
+<PropTable api={progressAPI} category="root" />
+<DataAttributeTable api={progressAPI} category="root" />
+
+### <Highlight color='#1C5AEC'>Indicator</Highlight>
+
+진행 상황을 시각적으로 보여주는 데 사용됩니다. 또한 보조 기술을 사용하여 진행 상황을 파악할 수 있습니다.
+
+<PropTable api={progressAPI} category="indicator" />
+<DataAttributeTable api={progressAPI} category="indicator" />

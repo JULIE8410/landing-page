@@ -1,0 +1,487 @@
+---
+sidebar_position: 28
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import PropTable from "../../src/components/table/PropTable.js";
+import DataAttributeTable from "../../src/components/table/DataAttributeTable.js";
+import CssVariableTable from "../../src/components/table/CssVariableTable.js";
+import KeyboardInteractionTable from "../../src/components/table/KeyboardInteractionTable.js";
+import tooltipAPI from "../data/tooltip.ts";
+import TooltipDemo from "../../src/components/core-components/TooltipDemo.jsx";
+
+# Tooltip
+
+요소가 키보드 포커스를 받거나 마우스가 요소 위를 이동할 때 요소와 관련된 정보를 표시하는 팝업입니다.
+
+<TooltipDemo />
+
+<Tabs>
+<TabItem value="js" label="index.js">
+
+```jsx
+import React from "react";
+import * as Tooltip from "@radix-ui/react-tooltip";
+import { PlusIcon } from "@radix-ui/react-icons";
+import "./styles.css";
+
+const TooltipDemo = () => {
+  return (
+    <Tooltip.Provider>
+      <Tooltip.Root>
+        <Tooltip.Trigger asChild>
+          <button className="IconButton">
+            <PlusIcon />
+          </button>
+        </Tooltip.Trigger>
+        <Tooltip.Portal>
+          <Tooltip.Content className="TooltipContent" sideOffset={5}>
+            Add to library
+            <Tooltip.Arrow className="TooltipArrow" />
+          </Tooltip.Content>
+        </Tooltip.Portal>
+      </Tooltip.Root>
+    </Tooltip.Provider>
+  );
+};
+
+export default TooltipDemo;
+```
+
+</TabItem>
+<TabItem value="css" label="styles.css">
+
+```css
+@import "@radix-ui/colors/black-alpha.css";
+@import "@radix-ui/colors/violet.css";
+
+/* reset */
+button {
+  all: unset;
+}
+
+.TooltipContent {
+  border-radius: 4px;
+  padding: 10px 15px;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--violet-11);
+  background-color: white;
+  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px
+      10px 20px -15px;
+  user-select: none;
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+.TooltipContent[data-state="delayed-open"][data-side="top"] {
+  animation-name: slideDownAndFade;
+}
+.TooltipContent[data-state="delayed-open"][data-side="right"] {
+  animation-name: slideLeftAndFade;
+}
+.TooltipContent[data-state="delayed-open"][data-side="bottom"] {
+  animation-name: slideUpAndFade;
+}
+.TooltipContent[data-state="delayed-open"][data-side="left"] {
+  animation-name: slideRightAndFade;
+}
+
+.TooltipArrow {
+  fill: white;
+}
+
+.IconButton {
+  font-family: inherit;
+  border-radius: 100%;
+  height: 35px;
+  width: 35px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--violet-11);
+  background-color: white;
+  box-shadow: 0 2px 10px var(--black-a7);
+}
+.IconButton:hover {
+  background-color: var(--violet-3);
+}
+.IconButton:focus {
+  box-shadow: 0 0 0 2px black;
+}
+
+@keyframes slideUpAndFade {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideRightAndFade {
+  from {
+    opacity: 0;
+    transform: translateX(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideDownAndFade {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideLeftAndFade {
+  from {
+    opacity: 0;
+    transform: translateX(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+## 특징
+
+![checkbox icon](../../static/img/checkboxicon.png) 디스플레이 지연을 전역적으로 제어하는 기능 제공
+
+![checkbox icon](../../static/img/checkboxicon.png) 트리거가 초점을 맞추거나 맴돌 때 열림
+
+![checkbox icon](../../static/img/checkboxicon.png) 트리거가 활성화되거나 escape를 누룰 때 닫힘
+
+![checkbox icon](../../static/img/checkboxicon.png) 사용자 지정 타이밍 지원
+
+export const Highlight = ({ children, color }) => (
+  <span style={{ color: color }}>{children}</span>
+);
+
+## <Highlight color='#1C5AEC'>설치</Highlight>
+
+커맨드라인에서 컴포넌트를 설치하세요.
+
+```bash
+npm install @radix-ui/react-tooltip
+```
+
+## <Highlight color='#1C5AEC'>구성</Highlight>
+
+모든 구성요소를 가져와서 조합하세요.
+
+```jsx
+import * as Tooltip from "@radix-ui/react-tooltip";
+
+export default () => (
+  <Tooltip.Provider>
+    <Tooltip.Root>
+      <Tooltip.Trigger />
+      <Tooltip.Portal>
+        <Tooltip.Content>
+          <Tooltip.Arrow />
+        </Tooltip.Content>
+      </Tooltip.Portal>
+    </Tooltip.Root>
+  </Tooltip.Provider>
+);
+```
+
+## <Highlight color='#1C5AEC'>API 참조</Highlight>
+
+### <Highlight color='#1C5AEC'>Provider</Highlight>
+
+앱을 감싸서 tooltip에 글로벌 기능을 제공합니다.
+
+<PropTable api={tooltipAPI} category="provider" />
+
+### <Highlight color='#1C5AEC'>Root</Highlight>
+
+Tooltip의 모든 부분을 포함합니다.
+
+<PropTable api={tooltipAPI} category="root" />
+
+### <Highlight color='#1C5AEC'>Trigger</Highlight>
+
+Tooltip을 토글하는 버튼입니다. 기본적으로 `Tooltip.Content`는 트리거에 대해 자신을 배치합니다.
+
+<PropTable api={tooltipAPI} category="trigger" />
+<DataAttributeTable api={tooltipAPI} category="trigger" />
+
+### <Highlight color='#1C5AEC'>Portal</Highlight>
+
+콘텐츠 부분을 `body`에 포팅합니다.
+
+<PropTable api={tooltipAPI} category="portal" />
+
+### <Highlight color='#1C5AEC'>Content</Highlight>
+
+Tooltip이 열려 있을 때 나타나는 컴포넌트입니다.
+
+<PropTable api={tooltipAPI} category="content" />
+<DataAttributeTable api={tooltipAPI} category="content" />
+<CssVariableTable api={tooltipAPI} category="content" />
+
+### <Highlight color='#1C5AEC'>Arrow</Highlight>
+
+Tooltip과 함께 렌더링할 선택적 화살표 요소입니다.
+트리거를 `Tooltip.Content`와 시각적으로 연결하는 데 사용할 수 있습니다.
+`Tooltip.Content`와 함께 렌더링해야 합니다.
+
+<PropTable api={tooltipAPI} category="arrow" />
+
+## <Highlight color='#1C5AEC'>예</Highlight>
+
+#### 전역 구성
+
+`Provider`를 사용하여 `delayDuration` 및 `skipDelayDuration`을 전역적으로 컨트롤합니다.
+
+```jsx
+import * as Tooltip from "@radix-ui/react-tooltip";
+
+export default () => (
+  <Tooltip.Provider delayDuration={800} skipDelayDuration={500}>
+    <Tooltip.Root>
+      <Tooltip.Trigger>…</Tooltip.Trigger>
+      <Tooltip.Content>…</Tooltip.Content>
+    </Tooltip.Root>
+    <Tooltip.Root>
+      <Tooltip.Trigger>…</Tooltip.Trigger>
+      <Tooltip.Content>…</Tooltip.Content>
+    </Tooltip.Root>
+  </Tooltip.Provider>
+);
+```
+
+#### 즉시 보여주기
+
+`delayDuration` prop를 사용하여 tooltip이 열리는 데 걸리는 시간을 제어합니다.
+
+```jsx
+import * as Tooltip from "@radix-ui/react-tooltip";
+
+export default () => (
+  <Tooltip.Root delayDuration={0}>
+    <Tooltip.Trigger>…</Tooltip.Trigger>
+    <Tooltip.Content>…</Tooltip.Content>
+  </Tooltip.Root>
+);
+```
+
+#### 비활성화된 버튼에서 도구 설명 표시
+
+비활성화된 버튼은 이벤트를 발생시키지 않으므로 다음 작업을 수행해야 합니다:
+
+- `Trigger`를 `span`으로 렌더링합니다..
+- `button`에 `pointerEvents`가 없는지 확인합니다.
+
+```jsx
+import * as Tooltip from "@radix-ui/react-tooltip";
+
+export default () => (
+  <Tooltip.Root>
+    <Tooltip.Trigger asChild>
+      <span tabIndex={0}>
+        <button disabled style={{ pointerEvents: "none" }}>
+          …
+        </button>
+      </span>
+    </Tooltip.Trigger>
+    <Tooltip.Content>…</Tooltip.Content>
+  </Tooltip.Root>
+);
+```
+
+#### 콘텐츠 사이즈 제한
+
+트리거 너비와 일치하도록 콘텐츠의 너비를 제한할 수도 있고, 뷰포트를 초과하지 않도록 높이를 제한할 수도 있습니다.
+이를 지원하기 위해 `--radix-tooltip-trigger-width` 및 `--radix-tooltip-content-available-height`와 같은 여러 CSS 사용자 지정 속성을 노출합니다.
+이를 사용하여 콘텐츠 차원을 제한합니다.
+
+```jsx
+// index.jsx
+import * as Tooltip from "@radix-ui/react-tooltip";
+import "./styles.css";
+
+export default () => (
+  <Tooltip.Root>
+    <Tooltip.Trigger>…</Tooltip.Trigger>
+    <Tooltip.Portal>
+      <Tooltip.Content className="TooltipContent" sideOffset={5}>
+        …
+      </Tooltip.Content>
+    </Tooltip.Portal>
+  </Tooltip.Root>
+);
+```
+
+```jsx
+/* styles.css */
+.TooltipContent {
+  width: var(--radix-tooltip-trigger-width);
+  max-height: var(--radix-tooltip-content-available-height);
+}
+```
+
+#### 원본 인식 애니메이션
+
+CSS 사용자 지정 속성 `--radix-tooltip-content-transform-origin`을 노출합니다.
+이를 사용하여 `side`, `sideOffset`, `align`, `alignOffset` 및 충돌을 기준으로 계산된 원본에서 컨텐츠를 애니메이션화합니다.
+
+```jsx
+// index.jsx
+import * as Tooltip from "@radix-ui/react-tooltip";
+import "./styles.css";
+
+export default () => (
+  <Tooltip.Root>
+    <Tooltip.Trigger>…</Tooltip.Trigger>
+    <Tooltip.Content className="TooltipContent">…</Tooltip.Content>
+  </Tooltip.Root>
+);
+```
+
+```css
+/* styles.css */
+.TooltipContent {
+  transform-origin: var(--radix-tooltip-content-transform-origin);
+  animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+```
+
+#### 충돌 인식 애니메이션
+
+`data-side`와 `data-align` 속성을 노출합니다.
+그 값은 충돌을 반영하기 위해 런타임에 변경됩니다. 충돌 및 방향 인식 애니메이션을 만들 때 사용합니다.
+
+```jsx
+// index.jsx
+import * as Tooltip from "@radix-ui/react-tooltip";
+import "./styles.css";
+
+export default () => (
+  <Tooltip.Root>
+    <Tooltip.Trigger>…</Tooltip.Trigger>
+    <Tooltip.Content className="TooltipContent">…</Tooltip.Content>
+  </Tooltip.Root>
+);
+```
+
+```css
+/* styles.css */
+.TooltipContent {
+  animation-duration: 0.6s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+.TooltipContent[data-side="top"] {
+  animation-name: slideUp;
+}
+.TooltipContent[data-side="bottom"] {
+  animation-name: slideDown;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+```
+
+## <Highlight color='#1C5AEC'>접근성</Highlight>
+
+### <Highlight color='#1C5AEC'>키보드 상호작용</Highlight>
+
+<KeyboardInteractionTable api={tooltipAPI} category="keyboardInteractions" />
+
+## <Highlight color='#1C5AEC'>사용자 정의 API</Highlight>
+
+원시적인 부분을 사용자 고유의 컴포넌트로 추상화하여 사용자 정의 API를 만듭니다.
+
+#### Tooltip 추상화 및 content prop 소개
+
+이 예제에서는 모든 `Tooltip` 부분을 추상화하고 새로운 `content` prop을 소개합니다.
+
+#### 사용
+
+```jsx
+import { Tooltip } from "./your-tooltip";
+
+export default () => (
+  <Tooltip content="Tooltip content">
+    <button>Tooltip trigger</button>
+  </Tooltip>
+);
+```
+
+#### 구현
+
+```jsx
+// your-tooltip.jsx
+import React from "react";
+import * as TooltipPrimitive from "@radix-ui/react-tooltip";
+
+export function Tooltip({
+  children,
+  content,
+  open,
+  defaultOpen,
+  onOpenChange,
+  ...props
+}) {
+  return (
+    <TooltipPrimitive.Root
+      open={open}
+      defaultOpen={defaultOpen}
+      onOpenChange={onOpenChange}
+    >
+      <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
+      <TooltipPrimitive.Content side="top" align="center" {...props}>
+        {content}
+        <TooltipPrimitive.Arrow width={11} height={5} />
+      </TooltipPrimitive.Content>
+    </TooltipPrimitive.Root>
+  );
+}
+```

@@ -1,0 +1,121 @@
+---
+sidebar_position: 20
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import PropTable from "../../src/components/table/PropTable.js";
+import DataAttributeTable from "../../src/components/table/DataAttributeTable.js";
+import separatorAPI from "../data/separator.ts";
+import SeparatorDemo from "../../src/components/core-components/SeparatorDemo.jsx";
+
+# Separator
+
+콘텐츠를 시각적 또는 의미적으로 구분합니다.
+
+<SeparatorDemo/ >
+
+<Tabs>
+<TabItem value="js" label="index.js">
+
+```jsx
+import React from "react";
+import * as Separator from "@radix-ui/react-separator";
+import "./styles.css";
+
+const SeparatorDemo = () => (
+  <div style={{ width: "100%", maxWidth: 300, margin: "0 15px" }}>
+    <div className="Text" style={{ fontWeight: 500 }}>
+      Radix Primitives
+    </div>
+    <div className="Text">An open-source UI component library.</div>
+    <Separator.Root className="SeparatorRoot" style={{ margin: "15px 0" }} />
+    <div style={{ display: "flex", height: 20, alignItems: "center" }}>
+      <div className="Text">Blog</div>
+      <Separator.Root
+        className="SeparatorRoot"
+        decorative
+        orientation="vertical"
+        style={{ margin: "0 15px" }}
+      />
+      <div className="Text">Docs</div>
+      <Separator.Root
+        className="SeparatorRoot"
+        decorative
+        orientation="vertical"
+        style={{ margin: "0 15px" }}
+      />
+      <div className="Text">Source</div>
+    </div>
+  </div>
+);
+
+export default SeparatorDemo;
+```
+
+</TabItem>
+<TabItem value="css" label="styles.css">
+
+```css
+@import "@radix-ui/colors/violet.css";
+
+.SeparatorRoot {
+  background-color: var(--violet-6);
+}
+.SeparatorRoot[data-orientation="horizontal"] {
+  height: 1px;
+  width: 100%;
+}
+.SeparatorRoot[data-orientation="vertical"] {
+  height: 100%;
+  width: 1px;
+}
+
+.Text {
+  color: white;
+  font-size: 15px;
+  line-height: 20px;
+}
+```
+
+</TabItem>
+</Tabs>
+
+## 특징
+
+![checkbox icon](../../static/img/checkboxicon.png) 수직 및 수평 방향 지원
+
+export const Highlight = ({ children, color }) => (
+  <span style={{ color: color }}>{children}</span>
+);
+
+## <Highlight color='#1C5AEC'>설치</Highlight>
+
+커맨드라인에서 컴포넌트를 설치하세요.
+
+```bash
+npm install @radix-ui/react-separator
+```
+
+## <Highlight color='#1C5AEC'>구성</Highlight>
+
+모든 구성요소를 가져와서 조합하세요.
+
+```jsx
+import * as Separator from "@radix-ui/react-separator";
+
+export default () => <Separator.Root />;
+```
+
+## <Highlight color='#1C5AEC'>API 참조</Highlight>
+
+### <Highlight color='#1C5AEC'>Root</Highlight>
+
+Separator입니다.
+
+<PropTable api={separatorAPI} category="root" />
+<DataAttributeTable api={separatorAPI} category="root" />
+
+## <Highlight color='#1C5AEC'>접근성</Highlight>
+
+[`Separator role requirements`](https://www.w3.org/TR/wai-aria-1.2/#separator)을 준수합니다.

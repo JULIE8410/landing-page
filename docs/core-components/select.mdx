@@ -1,0 +1,803 @@
+---
+sidebar_position: 19
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import PropTable from "../../src/components/table/PropTable.js";
+import DataAttributeTable from "../../src/components/table/DataAttributeTable.js";
+import CssVariableTable from "../../src/components/table/CssVariableTable.js";
+import KeyboardInteractionTable from "../../src/components/table/KeyboardInteractionTable.js";
+import selectAPI from "../data/select.ts";
+import SelectDemo from "../../src/components/core-components/SelectDemo.jsx";
+
+# Select
+
+버튼에 의해 트리거된 사용자가 선택할 수 있는 옵션 목록을 표시합니다.
+
+<SelectDemo />
+
+<Tabs>
+<TabItem value="js" label="index.js">
+
+```jsx
+import React from "react";
+import * as Select from "@radix-ui/react-select";
+import classnames from "classnames";
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+} from "@radix-ui/react-icons";
+import "./styles.css";
+
+const SelectDemo = () => (
+  <Select.Root>
+    <Select.Trigger className="SelectTrigger" aria-label="Food">
+      <Select.Value placeholder="Select a fruit…" />
+      <Select.Icon className="SelectIcon">
+        <ChevronDownIcon />
+      </Select.Icon>
+    </Select.Trigger>
+    <Select.Portal>
+      <Select.Content className="SelectContent">
+        <Select.ScrollUpButton className="SelectScrollButton">
+          <ChevronUpIcon />
+        </Select.ScrollUpButton>
+        <Select.Viewport className="SelectViewport">
+          <Select.Group>
+            <Select.Label className="SelectLabel">Fruits</Select.Label>
+            <SelectItem value="apple">Apple</SelectItem>
+            <SelectItem value="banana">Banana</SelectItem>
+            <SelectItem value="blueberry">Blueberry</SelectItem>
+            <SelectItem value="grapes">Grapes</SelectItem>
+            <SelectItem value="pineapple">Pineapple</SelectItem>
+          </Select.Group>
+
+          <Select.Separator className="SelectSeparator" />
+
+          <Select.Group>
+            <Select.Label className="SelectLabel">Vegetables</Select.Label>
+            <SelectItem value="aubergine">Aubergine</SelectItem>
+            <SelectItem value="broccoli">Broccoli</SelectItem>
+            <SelectItem value="carrot" disabled>
+              Carrot
+            </SelectItem>
+            <SelectItem value="courgette">Courgette</SelectItem>
+            <SelectItem value="leek">Leek</SelectItem>
+          </Select.Group>
+
+          <Select.Separator className="SelectSeparator" />
+
+          <Select.Group>
+            <Select.Label className="SelectLabel">Meat</Select.Label>
+            <SelectItem value="beef">Beef</SelectItem>
+            <SelectItem value="chicken">Chicken</SelectItem>
+            <SelectItem value="lamb">Lamb</SelectItem>
+            <SelectItem value="pork">Pork</SelectItem>
+          </Select.Group>
+        </Select.Viewport>
+        <Select.ScrollDownButton className="SelectScrollButton">
+          <ChevronDownIcon />
+        </Select.ScrollDownButton>
+      </Select.Content>
+    </Select.Portal>
+  </Select.Root>
+);
+
+const SelectItem = React.forwardRef(
+  ({ children, className, ...props }, forwardedRef) => {
+    return (
+      <Select.Item
+        className={classnames("SelectItem", className)}
+        {...props}
+        ref={forwardedRef}
+      >
+        <Select.ItemText>{children}</Select.ItemText>
+        <Select.ItemIndicator className="SelectItemIndicator">
+          <CheckIcon />
+        </Select.ItemIndicator>
+      </Select.Item>
+    );
+  }
+);
+
+export default SelectDemo;
+```
+
+</TabItem>
+<TabItem value="css" label="styles.css">
+
+```css
+@import "@radix-ui/colors/black-alpha.css";
+@import "@radix-ui/colors/mauve.css";
+@import "@radix-ui/colors/violet.css";
+
+/* reset */
+button {
+  all: unset;
+}
+
+.SelectTrigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  padding: 0 15px;
+  font-size: 13px;
+  line-height: 1;
+  height: 35px;
+  gap: 5px;
+  background-color: white;
+  color: var(--violet-11);
+  box-shadow: 0 2px 10px var(--black-a7);
+}
+.SelectTrigger:hover {
+  background-color: var(--mauve-3);
+}
+.SelectTrigger:focus {
+  box-shadow: 0 0 0 2px black;
+}
+.SelectTrigger[data-placeholder] {
+  color: var(--violet-9);
+}
+
+.SelectIcon {
+  color: Var(--violet-11);
+}
+
+.SelectContent {
+  overflow: hidden;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px
+      rgba(22, 23, 24, 0.2);
+}
+
+.SelectViewport {
+  padding: 5px;
+}
+
+.SelectItem {
+  font-size: 13px;
+  line-height: 1;
+  color: var(--violet-11);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  height: 25px;
+  padding: 0 35px 0 25px;
+  position: relative;
+  user-select: none;
+}
+.SelectItem[data-disabled] {
+  color: var(--mauve-8);
+  pointer-events: none;
+}
+.SelectItem[data-highlighted] {
+  outline: none;
+  background-color: var(--violet-9);
+  color: var(--violet-1);
+}
+
+.SelectLabel {
+  padding: 0 25px;
+  font-size: 12px;
+  line-height: 25px;
+  color: var(--mauve-11);
+}
+
+.SelectSeparator {
+  height: 1px;
+  background-color: var(--violet-6);
+  margin: 5px;
+}
+
+.SelectItemIndicator {
+  position: absolute;
+  left: 0;
+  width: 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.SelectScrollButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 25px;
+  background-color: white;
+  color: var(--violet-11);
+  cursor: default;
+}
+```
+
+</TabItem>
+</Tabs>
+
+## 특징
+
+![checkbox icon](../../static/img/checkboxicon.png) 제어 또는 비제어 가능
+
+![checkbox icon](../../static/img/checkboxicon.png) 두 가지 포지셔닝 모드 제공
+
+![checkbox icon](../../static/img/checkboxicon.png) Item, Label, Item 그룹 지원
+
+![checkbox icon](../../static/img/checkboxicon.png) 포커스의 완벽한 관리
+
+![checkbox icon](../../static/img/checkboxicon.png) 완전한 키보드 탐색
+
+![checkbox icon](../../static/img/checkboxicon.png) 사용자 지정 자리 표시자 지원
+
+![checkbox icon](../../static/img/checkboxicon.png) 자동 입력 지원
+
+![checkbox icon](../../static/img/checkboxicon.png) 오른쪽에서 왼쪽 방향 지원
+
+export const Highlight = ({ children, color }) => (
+  <span style={{ color: color }}>{children}</span>
+);
+
+## <Highlight color='#1C5AEC'>설치</Highlight>
+
+커맨드라인에서 컴포넌트를 설치하세요.
+
+```bash
+npm install @radix-ui/react-select
+```
+
+## <Highlight color='#1C5AEC'>구성</Highlight>
+
+모든 구성요소를 가져와서 조합하세요.
+
+```jsx
+import * as Select from "@radix-ui/react-select";
+
+export default () => (
+  <Select.Root>
+    <Select.Trigger>
+      <Select.Value />
+      <Select.Icon />
+    </Select.Trigger>
+
+    <Select.Portal>
+      <Select.Content>
+        <Select.ScrollUpButton />
+        <Select.Viewport>
+          <Select.Item>
+            <Select.ItemText />
+            <Select.ItemIndicator />
+          </Select.Item>
+
+          <Select.Group>
+            <Select.Label />
+            <Select.Item>
+              <Select.ItemText />
+              <Select.ItemIndicator />
+            </Select.Item>
+          </Select.Group>
+
+          <Select.Separator />
+        </Select.Viewport>
+        <Select.ScrollDownButton />
+        <Select.Arrow />
+      </Select.Content>
+    </Select.Portal>
+  </Select.Root>
+);
+```
+
+## <Highlight color='#1C5AEC'>API 참조</Highlight>
+
+### <Highlight color='#1C5AEC'>Root</Highlight>
+
+Select의 모든 부분을 포함합니다.
+
+<PropTable api={selectAPI} category="root" />
+
+### <Highlight color='#1C5AEC'>Trigger</Highlight>
+
+Select을 토글하는 버튼입니다. `Select.Content`는 트리거 위에 정렬되어 위치를 지정합니다.
+
+<PropTable api={selectAPI} category="trigger" />
+<DataAttributeTable api={selectAPI} category="trigger" />
+
+### <Highlight color='#1C5AEC'>Value</Highlight>
+
+선택한 값을 반영하는 부분입니다. 기본적으로 선택한 항목의 텍스트가 렌더링됩니다.
+더 많은 제어가 필요한 경우 대신 선택을 제어하여 사용자 고유의 `children`을 전달할 수 있습니다.
+올바른 위치를 보장하기 위해 스타일을 지정하지 않아야 합니다.
+선택한 항목에 값이 없는 경우에도 `placeholder` prop을 사용할 수 있습니다.
+
+<PropTable api={selectAPI} category="value" />
+
+### <Highlight color='#1C5AEC'>Icon</Highlight>
+
+작은 아이콘은 종종 열 수 있다는 사실에 대한 시각적 어포던스(affordance)로 값 옆에 표시됩니다.
+기본적으로 ▼를 렌더링하지만 `asChild` 또는 `children`을 사용하여 사용자 고유의 아이콘을 사용할 수 있습니다.
+
+<PropTable api={selectAPI} category="icon" />
+
+### <Highlight color='#1C5AEC'>Portal</Highlight>
+
+콘텐츠 부분을 `body`에 포팅합니다.
+
+<PropTable api={selectAPI} category="portal" />
+
+### <Highlight color='#1C5AEC'>Content</Highlight>
+
+선택 항목이 열렸을 때 나타나는 컴포넌트입니다.
+
+<PropTable api={selectAPI} category="content" />
+<DataAttributeTable api={selectAPI} category="content" />
+<CssVariableTable api={selectAPI} category="content" />
+
+### <Highlight color='#1C5AEC'>Viewport</Highlight>
+
+모든 항목을 포함하는 스크롤 뷰포트입니다.
+
+<PropTable api={selectAPI} category="viewport" />
+
+### <Highlight color='#1C5AEC'>Item</Highlight>
+
+선택 항목을 포함하는 컴포넌트입니다.
+
+<PropTable api={selectAPI} category="item" />
+<DataAttributeTable api={selectAPI} category="item" />
+
+### <Highlight color='#1C5AEC'>ItemText</Highlight>
+
+항목의 텍스트 부분입니다.
+해당 항목을 선택할 때 트리거에서 보려는 텍스트만 포함해야 합니다.
+올바른 위치를 보장하기 위해 스타일을 지정해서는 안 됩니다.
+
+<PropTable api={selectAPI} category="itemtext" />
+
+### <Highlight color='#1C5AEC'>ItemIndicator</Highlight>
+
+항목을 선택할 때 렌더링합니다. 이 요소를 직접 스타일링하거나 아이콘을 넣을 래퍼로 사용하거나 둘 다 사용할 수 있습니다.
+
+<PropTable api={selectAPI} category="itemindicator" />
+
+### <Highlight color='#1C5AEC'>ScrollUpButton</Highlight>
+
+Viewport 오버플로를 보여줄 뿐만 아니라 기능적으로 위쪽으로 스크롤할 수 있도록 어포던스(affordance)로 사용되는 옵션 버튼입니다.
+
+<PropTable api={selectAPI} category="scrollupbutton" />
+
+### <Highlight color='#1C5AEC'>ScrollDownButton</Highlight>
+
+Viewport 오버플로를 보여줄 뿐만 아니라 기능적으로 아래쪽으로 스크롤할 수 있도록 어포던스(affordance)로 사용되는 옵션 버튼입니다.
+
+<PropTable api={selectAPI} category="scrolldownbutton" />
+
+### <Highlight color='#1C5AEC'>Group</Highlight>
+
+여러 항목을 그룹화하는 데 사용되며, 자동 라벨링을 통해 접근성이 양호하도록 `Select.Label`과 함께 사용합니다.
+
+<PropTable api={selectAPI} category="group" />
+
+### <Highlight color='#1C5AEC'>Label</Highlight>
+
+그룹의 Label을 렌더링하는 데 사용됩니다. 화살표 키를 사용하여 초점을 맞출 수 없습니다.
+
+<PropTable api={selectAPI} category="label" />
+
+### <Highlight color='#1C5AEC'>Separator</Highlight>
+
+Select 내에서 항목을 시각적으로 구분하는 데 사용됩니다.
+
+<PropTable api={selectAPI} category="separator" />
+
+### <Highlight color='#1C5AEC'>Arrow</Highlight>
+
+내용과 나란히 렌더링할 선택적 화살표 요소입니다.
+이를 사용하여 트리거를 `Select.Content`와 시각적으로 연결할 수 있습니다.
+`Select.Content` 내부에서 렌더링해야 합니다. `position`이 `popper`로 설정된 경우에만 사용할 수 있습니다.
+
+<PropTable api={selectAPI} category="arrow" />
+
+## <Highlight color='#1C5AEC'>예</Highlight>
+
+#### 포지셔닝 모드 변경
+
+기본적으로 `Select`는 활성 항목에 대해 `Select.Content`를 지정하여 기본 MacOS 메뉴와 유사하게 동작합니다.
+`Popover` 또는 `DropdownMenu`와 유사한 대체 위치 지정 방법을 선호하는 경우 `position`를 `popper`로 설정하고 `side`, `sideOffset` 등의 추가 정렬 옵션을 사용할 수 있습니다.
+
+```jsx
+// index.jsx
+import * as Select from "@radix-ui/react-select";
+
+export default () => (
+  <Select.Root>
+    <Select.Trigger>…</Select.Trigger>
+    <Select.Portal>
+      <Select.Content position="popper" sideOffset={5}>
+        …
+      </Select.Content>
+    </Select.Portal>
+  </Select.Root>
+);
+```
+
+#### 콘텐츠 크기 제한
+
+`Select.Content`에서 `position="popper"`를 사용할 때, 트리거 너비와 일치하도록 콘텐츠의 너비를 제한하거나, 뷰포트를 초과하지 않도록 높이를 제한할 수도 있습니다.
+이를 지원하기 위해 `--radix-select-trigger-width` 및 `--radix-select-content-available-height`와 같은 여러 CSS 사용자 지정 속성을 사용합니다. 이를 사용하여 콘텐츠 차원을 제한합니다.
+
+```jsx
+// index.jsx
+import * as Select from "@radix-ui/react-select";
+import "./styles.css";
+
+export default () => (
+  <Select.Root>
+    <Select.Trigger>…</Select.Trigger>
+    <Select.Portal>
+      <Select.Content
+        className="SelectContent"
+        position="popper"
+        sideOffset={5}
+      >
+        …
+      </Select.Content>
+    </Select.Portal>
+  </Select.Root>
+);
+```
+
+```css
+/* styles.css */
+.SelectContent {
+  width: var(--radix-select-trigger-width);
+  max-height: var(--radix-select-content-available-height);
+}
+```
+
+#### 비활성화된 항목 포함
+
+`data-disabled` 속성을 통해 비활성화된 항목에 특수 스타일을 추가할 수 있습니다.
+
+```jsx
+// index.jsx
+import * as Select from "@radix-ui/react-select";
+import "./styles.css";
+
+export default () => (
+  <Select.Root>
+    <Select.Trigger>…</Select.Trigger>
+    <Select.Portal>
+      <Select.Content>
+        <Select.Viewport>
+          <Select.Item className="SelectItem" disabled>
+            …
+          </Select.Item>
+          <Select.Item>…</Select.Item>
+          <Select.Item>…</Select.Item>
+        </Select.Viewport>
+      </Select.Content>
+    </Select.Portal>
+  </Select.Root>
+);
+```
+
+```css
+/* styles.css */
+.SelectItem[data-disabled] {
+  color: "gainsboro";
+}
+```
+
+#### Placeholder 포함
+
+선택 항목에 값이 없을 때 `Value`에 `placeholder`를 사용할 수 있습니다. 또한 `Trigger`에는 스타일링에 도움이 되는 `data-placeholder` 속성이 있습니다.
+
+```jsx
+// index.jsx
+import * as Select from "@radix-ui/react-select";
+import "./styles.css";
+
+export default () => (
+  <Select.Root>
+    <Select.Trigger className="SelectTrigger">
+      <Select.Value placeholder="Pick an option" />
+      <Select.Icon />
+    </Select.Trigger>
+    <Select.Portal>
+      <Select.Content>…</Select.Content>
+    </Select.Portal>
+  </Select.Root>
+);
+```
+
+```css
+/* styles.css */
+.SelectTrigger[data-placeholder] {
+  color: "gainsboro";
+}
+```
+
+#### separator 포함
+
+항목 사이에 `Separator`를 추가하여 분리합니다.
+
+```jsx
+<Select.Root>
+  <Select.Trigger>…</Select.Trigger>
+  <Select.Portal>
+    <Select.Content>
+      <Select.Viewport>
+        <Select.Item>…</Select.Item>
+        <Select.Item>…</Select.Item>
+        <Select.Item>…</Select.Item>
+        <Select.Separator />
+        <Select.Item>…</Select.Item>
+        <Select.Item>…</Select.Item>
+      </Select.Viewport>
+    </Select.Content>
+  </Select.Portal>
+</Select.Root>
+```
+
+#### 그룹화된 항목 포함
+
+`Group` 및 `Label`을 사용하여 섹션의 항목을 그룹화합니다.
+
+```jsx
+<Select.Root>
+  <Select.Trigger>…</Select.Trigger>
+  <Select.Portal>
+    <Select.Content>
+      <Select.Viewport>
+        <Select.Group>
+          <Select.Label>Label</Select.Label>
+          <Select.Item>…</Select.Item>
+          <Select.Item>…</Select.Item>
+          <Select.Item>…</Select.Item>
+        </Select.Group>
+      </Select.Viewport>
+    </Select.Content>
+  </Select.Portal>
+</Select.Root>
+```
+
+#### 복잡한 항목 포함
+
+Item에 사용자 지정 콘텐츠를 사용할 수 있습니다.
+
+```jsx
+import * as Select from "@radix-ui/react-select";
+
+export default () => (
+  <Select.Root>
+    <Select.Trigger>…</Select.Trigger>
+    <Select.Portal>
+      <Select.Content>
+        <Select.Viewport>
+          <Select.Item>
+            <Select.ItemText>
+              <img src="…" />
+              Adolfo Hess
+            </Select.ItemText>
+            <Select.ItemIndicator>…</Select.ItemIndicator>
+          </Select.Item>
+          <Select.Item>…</Select.Item>
+          <Select.Item>…</Select.Item>
+        </Select.Viewport>
+      </Select.Content>
+    </Select.Portal>
+  </Select.Root>
+);
+```
+
+#### 트리거에 표시되는 값 제어
+
+기본적으로 트리거는 선택한 항목의 `ItemText` 내용을 자동으로 표시합니다.
+`ItemText` 부분 안에/밖에 항목을 넣도록 선택하여 표시되는 내용을 제어할 수 있습니다.
+더 많은 유연성이 필요한 경우 `value/onValueChange` prop을 사용하여 구성 요소를 제어하고 `children`를 `SelectValue`로 전달할 수 있습니다.
+입력한 항목에 액세스할 수 있는지 확인해야 합니다.
+
+```jsx
+const countries = { france: "🇫🇷", "united-kingdom": "🇬🇧", spain: "🇪🇸" };
+
+export default () => {
+  const [value, setValue] = React.useState("france");
+  return (
+    <Select.Root value={value} onValueChange={setValue}>
+      <Select.Trigger>
+        <Select.Value aria-label={value}>{countries[value]}</Select.Value>
+        <Select.Icon />
+      </Select.Trigger>
+      <Select.Portal>
+        <Select.Content>
+          <Select.Viewport>
+            <Select.Item value="france">
+              <Select.ItemText>France</Select.ItemText>
+              <Select.ItemIndicator>…</Select.ItemIndicator>
+            </Select.Item>
+            <Select.Item value="united-kingdom">
+              <Select.ItemText>United Kingdom</Select.ItemText>
+              <Select.ItemIndicator>…</Select.ItemIndicator>
+            </Select.Item>
+            <Select.Item value="spain">
+              <Select.ItemText>Spain</Select.ItemText>
+              <Select.ItemIndicator>…</Select.ItemIndicator>
+            </Select.Item>
+          </Select.Viewport>
+        </Select.Content>
+      </Select.Portal>
+    </Select.Root>
+  );
+};
+```
+
+#### 사용자 지정 scrollbar 포함
+
+최상의 UX를 위해 `ScrollUpButton`과 `ScrollDownButton` 부분을 사용하는 것을 권장하는 것처럼 기본 스크롤 바는 기본적으로 숨겨져 있습니다.
+만약 이러한 부분을 사용하고 싶지 않다면 `Scroll Area` primitive로 선택을 구성하십시오.
+
+```jsx
+// index.jsx
+import * as Select from "@radix-ui/react-select";
+import * as ScrollArea from "@radix-ui/react-scroll-area";
+import "./styles.css";
+
+export default () => (
+  <Select.Root>
+    <Select.Trigger>…</Select.Trigger>
+    <Select.Portal>
+      <Select.Content>
+        <ScrollArea.Root className="ScrollAreaRoot" type="auto">
+          <Select.Viewport asChild>
+            <ScrollArea.Viewport className="ScrollAreaViewport">
+              <StyledItem>…</StyledItem>
+              <StyledItem>…</StyledItem>
+              <StyledItem>…</StyledItem>
+            </ScrollArea.Viewport>
+          </Select.Viewport>
+          <ScrollArea.Scrollbar
+            className="ScrollAreaScrollbar"
+            orientation="vertical"
+          >
+            <ScrollArea.Thumb className="ScrollAreaThumb" />
+          </ScrollArea.Scrollbar>
+        </ScrollArea.Root>
+      </Select.Content>
+    </Select.Portal>
+  </Select.Root>
+);
+```
+
+```css
+/* styles.css */
+.ScrollAreaRoot {
+  width: 100%;
+  height: 100%;
+}
+
+.ScrollAreaViewport {
+  width: 100%;
+  height: 100%;
+}
+
+.ScrollAreaScrollbar {
+  width: 4px;
+  padding: 5px 2px;
+}
+
+.ScrollAreaThumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+}
+```
+
+## <Highlight color='#1C5AEC'>접근성</Highlight>
+
+[`ListBox WAI-ARIA design pattern`](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/)을 준수합니다.
+자세한 내용은 [`W3C Select-Only Combobox`](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/)예제를 참조하십시오.
+
+### <Highlight color='#1C5AEC'>키보드 상호작용</Highlight>
+
+<KeyboardInteractionTable api={selectAPI} category="keyboardInteractions" />
+
+### <Highlight color='#1C5AEC'>Labelling</Highlight>
+
+`Label` 컴포넌트를 사용하여 select에 시각적이고 접근 가능한 라벨을 제공할 수 있습니다.
+
+```jsx
+import * as Select from "@radix-ui/react-select";
+import { Label } from "@radix-ui/react-label";
+
+export default () => (
+  <>
+    <Label>
+      Country
+      <Select.Root>…</Select.Root>
+    </Label>
+
+    {/* or */}
+
+    <Label htmlFor="country">Country</Label>
+    <Select.Root>
+      <Select.Trigger id="country">…</Select.Trigger>
+      <Select.Portal>
+        <Select.Content>…</Select.Content>
+      </Select.Portal>
+    </Select.Root>
+  </>
+);
+```
+
+## <Highlight color='#1C5AEC'>사용자 정의 API</Highlight>
+
+원시적인 부분을 사용자 고유의 컴포넌트로 추상화하여 사용자 정의 API를 만듭니다.
+
+#### Select 및 SelectItem 추상화
+
+이 예제에서는 대부분의 부분을 추상화합니다.
+
+#### 사용
+
+```jsx
+import { Select, SelectItem } from "./your-select";
+
+export default () => (
+  <Select defaultValue="2">
+    <SelectItem value="1">Item 1</SelectItem>
+    <SelectItem value="2">Item 2</SelectItem>
+    <SelectItem value="3">Item 3</SelectItem>
+  </Select>
+);
+```
+
+#### 구현
+
+```jsx
+// your-select.jsx
+import React from "react";
+import * as SelectPrimitive from "@radix-ui/react-select";
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+} from "@radix-ui/react-icons";
+
+export const Select = React.forwardRef(
+  ({ children, ...props }, forwardedRef) => {
+    return (
+      <SelectPrimitive.Root {...props}>
+        <SelectPrimitive.Trigger ref={forwardedRef}>
+          <SelectPrimitive.Value />
+          <SelectPrimitive.Icon>
+            <ChevronDownIcon />
+          </SelectPrimitive.Icon>
+        </SelectPrimitive.Trigger>
+        <SelectPrimitive.Portal>
+          <SelectPrimitive.Content>
+            <SelectPrimitive.ScrollUpButton>
+              <ChevronUpIcon />
+            </SelectPrimitive.ScrollUpButton>
+            <SelectPrimitive.Viewport>{children}</SelectPrimitive.Viewport>
+            <SelectPrimitive.ScrollDownButton>
+              <ChevronDownIcon />
+            </SelectPrimitive.ScrollDownButton>
+          </SelectPrimitive.Content>
+        </SelectPrimitive.Portal>
+      </SelectPrimitive.Root>
+    );
+  }
+);
+
+export const SelectItem = React.forwardRef(
+  ({ children, ...props }, forwardedRef) => {
+    return (
+      <SelectPrimitive.Item {...props} ref={forwardedRef}>
+        <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+        <SelectPrimitive.ItemIndicator>
+          <CheckIcon />
+        </SelectPrimitive.ItemIndicator>
+      </SelectPrimitive.Item>
+    );
+  }
+);
+```

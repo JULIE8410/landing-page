@@ -1,0 +1,133 @@
+---
+sidebar_position: 12
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import PropTable from "../../src/components/table/PropTable.js";
+import labelAPI from "../data/label.ts";
+import LabelDemo from "../../src/components/core-components/LabelDemo.jsx";
+
+# Label
+
+컨트롤과 관련된 접근 가능한 레이블을 렌더링합니다.
+
+<LabelDemo />
+
+<Tabs>
+<TabItem value="js" label="index.js">
+
+```jsx
+import React from "react";
+import * as Label from "@radix-ui/react-label";
+import "./styles.css";
+
+const LabelDemo = () => (
+  <div
+    style={{
+      display: "flex",
+      padding: "0 20px",
+      flexWrap: "wrap",
+      gap: 15,
+      alignItems: "center",
+    }}
+  >
+    <Label.Root className="LabelRoot" htmlFor="firstName">
+      First name
+    </Label.Root>
+    <input
+      className="Input"
+      type="text"
+      id="firstName"
+      defaultValue="Pedro Duarte"
+    />
+  </div>
+);
+
+export default LabelDemo;
+```
+
+</TabItem>
+<TabItem value="css" label="styles.css">
+
+```css
+@import "@radix-ui/colors/black-alpha.css";
+
+/* reset */
+input {
+  all: unset;
+}
+
+.LabelRoot {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 35px;
+  color: white;
+}
+
+.Input {
+  width: 200px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  padding: 0 10px;
+  height: 35px;
+  font-size: 15px;
+  line-height: 1;
+  color: white;
+  background-color: var(--black-a5);
+  box-shadow: 0 0 0 1px var(--black-a9);
+}
+.Input:focus {
+  box-shadow: 0 0 0 2px black;
+}
+.Input::selection {
+  background-color: var(--black-a9);
+  color: white;
+}
+```
+
+</TabItem>
+</Tabs>
+
+### 특징
+
+![checkbox icon](../../static/img/checkboxicon.png) 라벨을 더블클릭하면 텍스트 선택이 불가능
+
+![checkbox icon](../../static/img/checkboxicon.png) 중첩 컨트롤을 지원
+
+export const Highlight = ({ children, color }) => (
+  <span style={{ color: color }}>{children}</span>
+);
+
+## <Highlight color='#1C5AEC'>설치</Highlight>
+
+커맨드라인에서 컴포넌트를 설치하세요.
+
+```bash
+npm install @radix-ui/react-label
+```
+
+## <Highlight color='#1C5AEC'>구성</Highlight>
+
+구성요소를 가져옵니다.
+
+```jsx
+import * as Label from "@radix-ui/react-label";
+
+export default () => <Label.Root />;
+```
+
+## <Highlight color='#1C5AEC'>API 참조</Highlight>
+
+### <Highlight color='#1C5AEC'>Root</Highlight>
+
+Label의 모든 부분을 포함합니다.
+
+<PropTable api={labelAPI} category="root" />
+
+## <Highlight color='#1C5AEC'>접근성</Highlight>
+
+이 구성 요소는 native `label` 요소를 기반으로 하며, 컨트롤을 래핑하거나 `htmlFor` 요소를 사용할 때 올바른 레이블을 자동으로 적용합니다.
+사용자 정의 컨트롤이 올바르게 작동하려면 `button`이나 `input`과 같은 native 요소를 기본으로 사용해야 합니다.

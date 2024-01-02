@@ -1,0 +1,90 @@
+---
+sidebar_position: 3
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import PropTable from "../../src/components/table/PropTable.js";
+import aspectRatioAPI from "../data/aspect-ratio.ts";
+import AspectRatioDemo from "../../src/components/core-components/AspectRatioDemo.jsx";
+
+# Aspect Ratio
+
+원하는 비율 내에서 내용을 표시합니다.
+
+<AspectRatioDemo />
+
+<Tabs>
+<TabItem value="js" label="index.js">
+
+```jsx
+import React from "react";
+import * as AspectRatio from "@radix-ui/react-aspect-ratio";
+import "./styles.css";
+const AspectRatioDemo = () => (
+  <div className="Container">
+    <AspectRatio.Root ratio={16 / 9}>
+      <img
+        className="Image"
+        src="https://images.unsplash.com/photo-1535025183041-0991a977e25b?w=300&dpr=2&q=80"
+        alt="Landscape photograph by Tobias Tullius"
+      />
+    </AspectRatio.Root>
+  </div>
+);
+export default AspectRatioDemo;
+```
+
+</TabItem>
+<TabItem value="css" label="styles.css">
+
+```css
+@import "@radix-ui/colors/black-alpha.css";
+.Container {
+  width: 300px;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px var(--black-a7);
+}
+.Image {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+```
+
+</TabItem>
+</Tabs>
+
+## 특징
+
+![checkbox icon](../../static/img/checkboxicon.png) 사용자 지정 비율을 허용
+
+export const Highlight = ({ children, color }) => (
+  <span style={{ color: color }}>{children}</span>
+);
+
+## <Highlight color='#1C5AEC'>설치</Highlight>
+
+커맨드라인에서 컴포넌트를 설치하세요.
+
+```bash
+npm install @radix-ui/react-aspect-ratio
+```
+
+## <Highlight color='#1C5AEC'>구성</Highlight>
+
+구성요소를 가져옵니다.
+
+```jsx
+import * as AspectRatio from "@radix-ui/react-aspect-ratio";
+export default () => <AspectRatio.Root />;
+```
+
+## <Highlight color='#1C5AEC'>API 참조</Highlight>
+
+### <Highlight color='#1C5AEC'>Root</Highlight>
+
+지정된 비율로 제한합니다.
+
+<PropTable api={aspectRatioAPI} category="root" />

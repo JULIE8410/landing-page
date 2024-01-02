@@ -1,0 +1,241 @@
+---
+sidebar_position: 6
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import PropTable from "../../src/components/table/PropTable.js";
+import DataAttributeTable from "../../src/components/table/DataAttributeTable.js";
+import CssVariableTable from "../../src/components/table/CssVariableTable.js";
+import KeyboardInteractionTable from "../../src/components/table/KeyboardInteractionTable.js";
+import collapsibleAPI from "../data/collapsible.ts";
+import CollapsibleDemo from "../../src/components/core-components/CollapsibleDemo.jsx";
+
+# Collapsible
+
+패널을 확장/축소하는 대화형 구성요소입니다.
+
+<CollapsibleDemo />
+
+<Tabs>
+<TabItem value="js" label="index.js">
+
+```jsx
+import React from "react";
+import * as Collapsible from "@radix-ui/react-collapsible";
+import { RowSpacingIcon, Cross2Icon } from "@radix-ui/react-icons";
+import "./styles.css";
+const CollapsibleDemo = () => {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <Collapsible.Root
+      className="CollapsibleRoot"
+      open={open}
+      onOpenChange={setOpen}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <span className="Text" style={{ color: "white" }}>
+          @peduarte starred 3 repositories
+        </span>
+        <Collapsible.Trigger asChild>
+          <button className="IconButton">
+            {open ? <Cross2Icon /> : <RowSpacingIcon />}
+          </button>
+        </Collapsible.Trigger>
+      </div>
+      <div className="Repository">
+        <span className="Text">@radix-ui/primitives</span>
+      </div>
+      <Collapsible.Content>
+        <div className="Repository">
+          <span className="Text">@radix-ui/colors</span>
+        </div>
+        <div className="Repository">
+          <span className="Text">@stitches/react</span>
+        </div>
+      </Collapsible.Content>
+    </Collapsible.Root>
+  );
+};
+export default CollapsibleDemo;
+```
+
+</TabItem>
+<TabItem value="css" label="styles.css">
+
+```css
+@import "@radix-ui/colors/black-alpha.css";
+@import "@radix-ui/colors/violet.css";
+/* reset */
+button {
+  all: unset;
+}
+.CollapsibleRoot {
+  width: 300px;
+}
+.IconButton {
+  font-family: inherit;
+  border-radius: 100%;
+  height: 25px;
+  width: 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--violet-11);
+  box-shadow: 0 2px 10px var(--black-a7);
+}
+.IconButton[data-state="closed"] {
+  background-color: white;
+}
+.IconButton[data-state="open"] {
+  background-color: var(--violet-3);
+}
+.IconButton:hover {
+  background-color: var(--violet-3);
+}
+.IconButton:focus {
+  box-shadow: 0 0 0 2px black;
+}
+.Text {
+  color: var(--violet-11);
+  font-size: 15px;
+  line-height: 25px;
+}
+.Repository {
+  background-color: white;
+  border-radius: 4px;
+  margin: 10px 0;
+  padding: 10px;
+  box-shadow: 0 2px 10px var(--black-a7);
+}
+```
+
+</TabItem>
+</Tabs>
+
+## 특징
+
+![checkbox icon](../../static/img/checkboxicon.png) 완전한 키보드 탐색
+
+![checkbox icon](../../static/img/checkboxicon.png) 제어 또는 비제어 가능
+
+export const Highlight = ({ children, color }) => (
+  <span style={{ color: color }}>{children}</span>
+);
+
+## <Highlight color='#1C5AEC'>설치</Highlight>
+
+커맨드라인에서 컴포넌트를 설치하세요.
+
+```bash
+npm install @radix-ui/react-collapsible
+```
+
+## <Highlight color='#1C5AEC'>구성</Highlight>
+
+모든 구성요소를 가져와서 조합하세요.
+
+```jsx
+import * as Collapsible from "@radix-ui/react-collapsible";
+export default () => (
+  <Collapsible.Root>
+    <Collapsible.Trigger />
+    <Collapsible.Content />
+  </Collapsible.Root>
+);
+```
+
+## <Highlight color='#1C5AEC'>API 참조</Highlight>
+
+### <Highlight color='#1C5AEC'>Root</Highlight>
+
+Collapsible의 모든 부분을 포함합니다.
+
+<PropTable api={collapsibleAPI} category="root" />
+
+<DataAttributeTable api={collapsibleAPI} category="root" />
+
+### <Highlight color='#1C5AEC'>Trigger</Highlight>
+
+접을 수 있는 버튼을 전환(토글)합니다.
+
+<PropTable api={collapsibleAPI} category="trigger" />
+
+<DataAttributeTable api={collapsibleAPI} category="trigger" />
+
+### <Highlight color='#1C5AEC'>Content</Highlight>
+
+접을 수 있는 내용을 포함하는 구성 요소입니다.
+
+<PropTable api={collapsibleAPI} category="content" />
+
+<DataAttributeTable api={collapsibleAPI} category="content" />
+
+<CssVariableTable api={collapsibleAPI} category="content" />
+
+## <Highlight color='#1C5AEC'>예</Highlight>
+
+#### 애니메이션 컨텐츠 크기
+
+`--radix-collapsible-content-width` 및/또는 `--radix-collapsible-content-height`를 사용하여 콘텐츠가 열리거나 닫힐 때 크기를 애니메이션화합니다. 예시는 다음과 같습니다:
+
+```jsx
+// index.jsx
+import * as Collapsible from "@radix-ui/react-collapsible";
+import "./styles.css";
+
+export default () => (
+  <Collapsible.Root>
+    <Collapsible.Trigger>…</Collapsible.Trigger>
+    <Collapsible.Content className="CollapsibleContent">…</Collapsible.Content>
+  </Collapsible.Root>
+);
+```
+
+```css
+/* styles.css */
+.CollapsibleContent {
+  overflow: hidden;
+}
+.CollapsibleContent[data-state="open"] {
+  animation: slideDown 300ms ease-out;
+}
+.CollapsibleContent[data-state="closed"] {
+  animation: slideUp 300ms ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    height: var(--radix-collapsible-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+```
+
+## <Highlight color='#1C5AEC'>접근성</Highlight>
+
+[` Disclosure WAI-ARIA design pattern`](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/)을 준수합니다.
+
+### <Highlight color='#1C5AEC'>키보드 상호작용</Highlight>
+
+<KeyboardInteractionTable
+  api={collapsibleAPI}
+  category="keyboardInteractions"
+/>
