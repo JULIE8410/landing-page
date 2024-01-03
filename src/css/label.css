@@ -12,7 +12,7 @@ input {
   color: white;
 }
 
-.Input {
+.LabelInput {
   width: 200px;
   display: inline-flex;
   align-items: center;
@@ -26,10 +26,10 @@ input {
   background-color: var(--black-a5);
   box-shadow: 0 0 0 1px var(--black-a9);
 }
-.Input:focus {
+.LabelInput:focus {
   box-shadow: 0 0 0 2px black;
 }
-.Input::selection {
+.LabelInput::selection {
   background-color: var(--black-a9);
   color: white;
 }

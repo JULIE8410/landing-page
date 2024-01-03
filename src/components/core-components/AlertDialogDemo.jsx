@@ -7,7 +7,10 @@ const AlertDialogDemo = () => (
   <div className="ComponentBox">
     <AlertDialog.Root>
       <AlertDialog.Trigger asChild>
-        <button className="Button violet" style={{ width: "fit-content" }}>
+        <button
+          className="AlertDialogButton violet"
+          style={{ width: "fit-content" }}
+        >
           계정 삭제
         </button>
       </AlertDialog.Trigger>
@@ -21,12 +24,19 @@ const AlertDialogDemo = () => (
             계정이 삭제되면 되돌릴 수 없습니다. '확인' 버튼을 누르면 계정이
             영구적으로 삭제되고 서버에서 데이터가 제거됩니다.
           </AlertDialog.Description>
-          <div style={{ display: "flex", gap: 25, justifyContent: "flex-end" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: 25,
+              justifyContent: "flex-end",
+              marginTop: "20px",
+            }}
+          >
             <AlertDialog.Cancel asChild>
-              <button className="Button mauve">취소</button>
+              <button className="AlertDialogButton mauve">취소</button>
             </AlertDialog.Cancel>
             <AlertDialog.Action asChild>
-              <button className="Button red">삭제</button>
+              <button className="AlertDialogButton red">삭제</button>
             </AlertDialog.Action>
           </div>
         </AlertDialog.Content>

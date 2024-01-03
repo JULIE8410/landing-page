@@ -67,7 +67,7 @@ input {
   box-shadow: 0 0 0 2px black;
 }
 
-.Text {
+.TabsText {
   margin-top: 0;
   margin-bottom: 20px;
   color: var(--mauve-11);
@@ -75,7 +75,7 @@ input {
   line-height: 1.5;
 }
 
-.Fieldset {
+.TabsFieldset {
   margin-bottom: 15px;
   width: 100%;
   display: flex;
@@ -83,7 +83,7 @@ input {
   justify-content: flex-start;
 }
 
-.Label {
+.TabsLabel {
   font-size: 13px;
   line-height: 1;
   margin-bottom: 10px;
@@ -91,7 +91,7 @@ input {
   display: block;
 }
 
-.Input {
+.TabsInput {
   flex: 1 0 auto;
   border-radius: 4px;
   padding: 0 10px;
@@ -101,7 +101,7 @@ input {
   box-shadow: 0 0 0 1px var(--violet-7);
   height: 35px;
 }
-.Input:focus {
+.TabsInput:focus {
   box-shadow: 0 0 0 2px var(--violet-8);
 }
 

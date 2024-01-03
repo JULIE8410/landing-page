@@ -1,6 +1,6 @@
 import React from "react";
 import * as Progress from "@radix-ui/react-progress";
-// import "../css/global.css";
+import "../../css/global.css";
 import "../../css/progress.css";
 
 const ProgressDemo = () => {
@@ -12,12 +12,14 @@ const ProgressDemo = () => {
   }, []);
 
   return (
-    <Progress.Root className="ProgressRoot" value={progress}>
-      <Progress.Indicator
-        className="ProgressIndicator"
-        style={{ transform: `translateX(-${100 - progress}%)` }}
-      />
-    </Progress.Root>
+    <div className="ComponentBox">
+      <Progress.Root className="ProgressRoot" value={progress}>
+        <Progress.Indicator
+          className="ProgressIndicator"
+          style={{ transform: `translateX(-${100 - progress}%)` }}
+        />
+      </Progress.Root>
+    </div>
   );
 };
 

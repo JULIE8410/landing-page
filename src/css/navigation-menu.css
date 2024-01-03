@@ -6,7 +6,9 @@
 
 /* reset */
 button,
-p {
+p,
+body
+ {
   all: unset;
 }
 

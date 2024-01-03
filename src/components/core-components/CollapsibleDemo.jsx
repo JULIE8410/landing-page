@@ -21,10 +21,10 @@ const CollapsibleDemo = () => {
           }}
         >
           <span className="Text" style={{ color: "white" }}>
-            @peduarte starred 3 repositories
+            @홍길동님이 보유한 3개의 저장소
           </span>
           <Collapsible.Trigger asChild>
-            <button className="IconButton">
+            <button className="CollapsibleIconButton">
               {open ? <Cross2Icon /> : <RowSpacingIcon />}
             </button>
           </Collapsible.Trigger>

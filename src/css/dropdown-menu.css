@@ -97,7 +97,7 @@ button {
   fill: white;
 }
 
-.IconButton {
+.DropdownIconButton {
   font-family: inherit;
   border-radius: 100%;
   height: 35px;
@@ -109,10 +109,10 @@ button {
   background-color: white;
   box-shadow: 0 2px 10px var(--black-a7);
 }
-.IconButton:hover {
+.DropdownIconButton:hover {
   background-color: var(--violet-3);
 }
-.IconButton:focus {
+.DropdownIconButton:focus {
   box-shadow: 0 0 0 2px black;
 }
 

@@ -37,9 +37,9 @@ input {
 
 .DialogTitle {
   margin: 0;
-  font-weight: 500;
+  font-weight: 700;
   color: var(--mauve-12);
-  font-size: 17px;
+  font-size: 20px;
 }
 
 .DialogDescription {
@@ -49,7 +49,7 @@ input {
   line-height: 1.5;
 }
 
-.Button {
+.DialogButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -60,29 +60,29 @@ input {
   font-weight: 500;
   height: 35px;
 }
-.Button.violet {
+.DialogButton.violet {
   background-color: white;
   color: var(--violet-11);
   box-shadow: 0 2px 10px var(--black-a7);
 }
-.Button.violet:hover {
+.DialogButton.violet:hover {
   background-color: var(--mauve-3);
 }
-.Button.violet:focus {
+.DialogButton.violet:focus {
   box-shadow: 0 0 0 2px black;
 }
-.Button.green {
+.DialogButton.green {
   background-color: var(--green-4);
   color: var(--green-11);
 }
-.Button.green:hover {
+.DialogButton.green:hover {
   background-color: var(--green-5);
 }
-.Button.green:focus {
+.DialogButton.green:focus {
   box-shadow: 0 0 0 2px var(--green-7);
 }
 
-.IconButton {
+.DialogIconButton {
   font-family: inherit;
   border-radius: 100%;
   height: 25px;
@@ -95,28 +95,30 @@ input {
   top: 10px;
   right: 10px;
 }
-.IconButton:hover {
+.DialogIconButton:hover {
   background-color: var(--violet-4);
 }
-.IconButton:focus {
+.DialogIconButton:focus {
   box-shadow: 0 0 0 2px var(--violet-7);
 }
 
-.Fieldset {
+.DialogFieldset {
   display: flex;
   gap: 20px;
   align-items: center;
   margin-bottom: 15px;
+  margin-top: 25px;
 }
 
-.Label {
+.DialogLabel {
   font-size: 15px;
+  font-weight: bold;
   color: var(--violet-11);
   width: 90px;
   text-align: right;
 }
 
-.Input {
+.DialogInput {
   width: 100%;
   flex: 1;
   display: inline-flex;
@@ -130,7 +132,7 @@ input {
   box-shadow: 0 0 0 1px var(--violet-7);
   height: 35px;
 }
-.Input:focus {
+.DialogInput:focus {
   box-shadow: 0 0 0 2px var(--violet-8);
 }
 

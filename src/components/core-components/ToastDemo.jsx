@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Toast from "@radix-ui/react-toast";
-// import "../css/global.css";
+import "../../css/global.css";
 import "../../css/toast.css";
 
 const ToastDemo = () => {
@@ -13,41 +13,45 @@ const ToastDemo = () => {
   }, []);
 
   return (
-    <Toast.Provider swipeDirection="right">
-      <button
-        className="Button large violet"
-        onClick={() => {
-          setOpen(false);
-          window.clearTimeout(timerRef.current);
-          timerRef.current = window.setTimeout(() => {
-            eventDateRef.current = oneWeekAway();
-            setOpen(true);
-          }, 100);
-        }}
-      >
-        Add to calendar
-      </button>
-
-      <Toast.Root className="ToastRoot" open={open} onOpenChange={setOpen}>
-        <Toast.Title className="ToastTitle">Scheduled: Catch up</Toast.Title>
-        <Toast.Description asChild>
-          <time
-            className="ToastDescription"
-            dateTime={eventDateRef.current.toISOString()}
-          >
-            {prettyDate(eventDateRef.current)}
-          </time>
-        </Toast.Description>
-        <Toast.Action
-          className="ToastAction"
-          asChild
-          altText="Goto schedule to undo"
+    <div className="ComponentBox">
+      <Toast.Provider swipeDirection="right">
+        <button
+          className="Button large violet"
+          onClick={() => {
+            setOpen(false);
+            window.clearTimeout(timerRef.current);
+            timerRef.current = window.setTimeout(() => {
+              eventDateRef.current = oneWeekAway();
+              setOpen(true);
+            }, 100);
+          }}
         >
-          <button className="Button small green">Undo</button>
-        </Toast.Action>
-      </Toast.Root>
-      <Toast.Viewport className="ToastViewport" />
-    </Toast.Provider>
+          캘린더에 추가
+        </button>
+
+        <Toast.Root className="ToastRoot" open={open} onOpenChange={setOpen}>
+          <Toast.Title className="ToastTitle">
+            스케줄이 추가되었습니다.
+          </Toast.Title>
+          <Toast.Description asChild>
+            <time
+              className="ToastDescription"
+              dateTime={eventDateRef.current.toISOString()}
+            >
+              {prettyDate(eventDateRef.current)}
+            </time>
+          </Toast.Description>
+          <Toast.Action
+            className="ToastAction"
+            asChild
+            altText="Goto schedule to undo"
+          >
+            <button className="Button small green">되돌리기</button>
+          </Toast.Action>
+        </Toast.Root>
+        <Toast.Viewport className="ToastViewport" />
+      </Toast.Provider>
+    </div>
   );
 };
 

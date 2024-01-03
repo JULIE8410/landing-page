@@ -6,61 +6,63 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
 } from "@radix-ui/react-icons";
-// import "../css/global.css";
+import "../../css/global.css";
 import "../../css/select.css";
 
 const SelectDemo = () => (
-  <Select.Root>
-    <Select.Trigger className="SelectTrigger" aria-label="Food">
-      <Select.Value placeholder="Select a fruit…" />
-      <Select.Icon className="SelectIcon">
-        <ChevronDownIcon />
-      </Select.Icon>
-    </Select.Trigger>
-    <Select.Portal>
-      <Select.Content className="SelectContent">
-        <Select.ScrollUpButton className="SelectScrollButton">
-          <ChevronUpIcon />
-        </Select.ScrollUpButton>
-        <Select.Viewport className="SelectViewport">
-          <Select.Group>
-            <Select.Label className="SelectLabel">Fruits</Select.Label>
-            <SelectItem value="apple">Apple</SelectItem>
-            <SelectItem value="banana">Banana</SelectItem>
-            <SelectItem value="blueberry">Blueberry</SelectItem>
-            <SelectItem value="grapes">Grapes</SelectItem>
-            <SelectItem value="pineapple">Pineapple</SelectItem>
-          </Select.Group>
-
-          <Select.Separator className="SelectSeparator" />
-
-          <Select.Group>
-            <Select.Label className="SelectLabel">Vegetables</Select.Label>
-            <SelectItem value="aubergine">Aubergine</SelectItem>
-            <SelectItem value="broccoli">Broccoli</SelectItem>
-            <SelectItem value="carrot" disabled>
-              Carrot
-            </SelectItem>
-            <SelectItem value="courgette">Courgette</SelectItem>
-            <SelectItem value="leek">Leek</SelectItem>
-          </Select.Group>
-
-          <Select.Separator className="SelectSeparator" />
-
-          <Select.Group>
-            <Select.Label className="SelectLabel">Meat</Select.Label>
-            <SelectItem value="beef">Beef</SelectItem>
-            <SelectItem value="chicken">Chicken</SelectItem>
-            <SelectItem value="lamb">Lamb</SelectItem>
-            <SelectItem value="pork">Pork</SelectItem>
-          </Select.Group>
-        </Select.Viewport>
-        <Select.ScrollDownButton className="SelectScrollButton">
+  <div className="ComponentBox">
+    <Select.Root>
+      <Select.Trigger className="SelectTrigger" aria-label="Food">
+        <Select.Value placeholder="원하는 품목을 선택하세요.." />
+        <Select.Icon className="SelectIcon">
           <ChevronDownIcon />
-        </Select.ScrollDownButton>
-      </Select.Content>
-    </Select.Portal>
-  </Select.Root>
+        </Select.Icon>
+      </Select.Trigger>
+      <Select.Portal>
+        <Select.Content className="SelectContent">
+          <Select.ScrollUpButton className="SelectScrollButton">
+            <ChevronUpIcon />
+          </Select.ScrollUpButton>
+          <Select.Viewport className="SelectViewport">
+            <Select.Group>
+              <Select.Label className="SelectLabel">과일</Select.Label>
+              <SelectItem value="apple">사과</SelectItem>
+              <SelectItem value="banana">바나나</SelectItem>
+              <SelectItem value="blueberry">블루베리</SelectItem>
+              <SelectItem value="grapes">포도</SelectItem>
+              <SelectItem value="pineapple">파인애플</SelectItem>
+            </Select.Group>
+
+            <Select.Separator className="SelectSeparator" />
+
+            <Select.Group>
+              <Select.Label className="SelectLabel">채소</Select.Label>
+              <SelectItem value="aubergine">가지</SelectItem>
+              <SelectItem value="broccoli">브로콜리</SelectItem>
+              <SelectItem value="carrot" disabled>
+                당근
+              </SelectItem>
+              <SelectItem value="courgette">애호박</SelectItem>
+              <SelectItem value="leek">파</SelectItem>
+            </Select.Group>
+
+            <Select.Separator className="SelectSeparator" />
+
+            <Select.Group>
+              <Select.Label className="SelectLabel">육류</Select.Label>
+              <SelectItem value="beef">소고기</SelectItem>
+              <SelectItem value="chicken">치킨</SelectItem>
+              <SelectItem value="lamb">양</SelectItem>
+              <SelectItem value="pork">돼지</SelectItem>
+            </Select.Group>
+          </Select.Viewport>
+          <Select.ScrollDownButton className="SelectScrollButton">
+            <ChevronDownIcon />
+          </Select.ScrollDownButton>
+        </Select.Content>
+      </Select.Portal>
+    </Select.Root>
+  </div>
 );
 
 const SelectItem = React.forwardRef(

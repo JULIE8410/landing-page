@@ -36,7 +36,7 @@ button {
   transform: translateX(19px);
 }
 
-.Label {
+.SwitchLabel {
   color: white;
   font-size: 15px;
   line-height: 1;
